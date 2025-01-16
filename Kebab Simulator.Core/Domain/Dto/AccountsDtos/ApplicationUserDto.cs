@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GalacticTitans.Core.Dto.AccountsDtos
+namespace Kebab_Simulator.Core.Dto.AccountsDtos
 {
     public class ApplicationUserDto
     {

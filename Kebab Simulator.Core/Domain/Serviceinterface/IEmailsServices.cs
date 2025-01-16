@@ -5,13 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kebab_Simulator.Core.Domain.Serviceinterface
+namespace Kebab_Simulator.Core.ServiceInterface
 {
-    public class IEmailsServices
+    public interface IEmailsServices
     {
-        public void SendEmail(EmailDto dto)
-        {
-            throw new NotImplementedException();
-        }
+        void SendEmail(EmailDto dto);
+        void SendEmailToken(EmailTokenDto dto, string token);
     }
 }
