@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Kebab_Simulator.Core.Domain.Serviceinterface
 {
-    public class ITagHelper
+    public class IAccountsServices
     {
+        //Task<ApplicationUser> ConfirmEmail(string userId, string token);
+        //Task<ApplicationUser> Register(ApplicationUserDto dto);
+        //Task<ApplicationUser> Login(LoginDto dto);
     }
 }
