@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Kebab_Simulator.Core.Domain.Serviceinterface
 {
-    public interface ISolarSystemServices
-    {
-        Task<SolarSystem> DetailsAsync(Guid id);
-        Task<SolarSystem> Create(SolarSystemDto dto, List<AstralBody> planetsInSystem);
-        Task<SolarSystem> Update(SolarSystemDto dto, List<AstralBody> planetsInSystem, List<AstralBody> removedPlanets);
-        Task<SolarSystem> Delete(List<AstralBody> body, SolarSystem system, List<Guid> planetIDs);
-    }
+	public interface ISolarSystemServices
+	{
+		Task<SolarSystem> DetailsAsync(Guid id);
+		Task<SolarSystem> Create(SolarSystemDto dto, List<AstralBody> planetsInSystem);
+		Task<SolarSystem> Update(SolarSystemDto dto, List<AstralBody> planetsInSystem, List<AstralBody> removedPlanets);
+		Task<SolarSystem> Delete(List<AstralBody> body, SolarSystem system, List<Guid> planetIDs);
+	}
 }

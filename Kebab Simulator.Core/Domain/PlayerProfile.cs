@@ -13,7 +13,7 @@ namespace Kebab_Simulator.Core.Domain
 	public class PlayerProfile
 	{
 		public Guid ID { get; set; }
-		public Guid ApplicationUserID { get; set; }
+		public string ApplicationUserID { get; set; }
 		public string ScreenName { get; set; }
 		public int KebabCredits { get; set; }
 		public int ScrapResource { get; set; }
