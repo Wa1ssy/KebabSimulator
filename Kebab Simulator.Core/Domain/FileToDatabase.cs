@@ -12,5 +12,6 @@ namespace Kebab_Simulator.Core.Domain.Dto
         public string ImageTitle { get; set; }
         public byte[] ImageData { get; set; }
         public Guid? KebabID { get; set; }
-    }
+		public Guid? AstralBodyID { get; set; }
+	}
 }

@@ -11,7 +11,8 @@ namespace Kebab_Simulator.Core.Domain.Serviceinterface
     public interface IFileServices
     {
         void UploadFilesToDatabase(KebabDto dto, Kebab domain);
-        Task<FileToDatabase> RemoveImageFromDatabase(FileToDatabaseDto dto);
+		void UploadFilesToDatabase(AstralBodyDto dto, AstralBody domain);
+		Task<FileToDatabase> RemoveImageFromDatabase(FileToDatabaseDto dto);
 
     }
 }

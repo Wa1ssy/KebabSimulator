@@ -1,4 +1,6 @@
-﻿namespace Kebab_Simulator.Models.Profiles
+﻿using Kebab_Simulator.Core.Domain;
+
+namespace Kebab_Simulator.Models.Profiles
 {
     public class ProfileRegisterViewModel
     {

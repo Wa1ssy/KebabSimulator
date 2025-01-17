@@ -1,4 +1,6 @@
-﻿namespace Kebab_Simulator.Models.Stories
+﻿using Kebab_Simulator.Core.Domain.Dto;
+
+namespace Kebab_Simulator.Models.Stories
 {
     public class KebabOwnershipFromStoryViewmodel
     {
