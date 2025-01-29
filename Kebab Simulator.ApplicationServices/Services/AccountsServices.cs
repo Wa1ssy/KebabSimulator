@@ -38,6 +38,7 @@ namespace Kebab_Simulator.ApplicationServices.Services
                 UserName = dto.UserName,
                 Email = dto.Email,
                 City = dto.City,
+                ProfileType = false
             };
             var result = await _userManager.CreateAsync (user, dto.Password);
             if (result.Succeeded)
@@ -60,6 +61,11 @@ namespace Kebab_Simulator.ApplicationServices.Services
         public async Task<ApplicationUser> Login(LoginDto dto)
         {
             var user = await _userManager.FindByEmailAsync (dto.Email);
+            return user;
+        }
+        public async Task<ApplicationUser> Login(LoginDto dto)
+        {
+            var user = await _userManager.FindByEmailAsync(dto.Email);
             return user;
         }
     }

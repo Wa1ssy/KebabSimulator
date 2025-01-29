@@ -10,14 +10,17 @@ using System.Threading.Tasks;
 
 namespace Kebab_Simulator.Data
 {
-    public class KebabSimulatorContext : DbContext
+    public class KebabSimulatorContext : DbContext<ApplicationUser>
     {
         public KebabSimulatorContext(DbContextOptions<KebabSimulatorContext> options) : base(options) { }
         public DbSet<FileToDatabase> FilesToDatabase { get; set; }
         
         public DbSet<Kebab> Kebabs { get; set; }
-		public DbSet<Galaxy> Galaxies { get; set; }
+		public DbSet<Country> Countries { get; set; }
+        public DbSet<Restaurant> Restaurants { get; set; }
+        public DbSet<FileToDatabase> FileToDatabases { get; set; }
 		public DbSet<IdentityRole> IdentityRoles { get; set; }
 		public DbSet<PlayerProfile> PlayerProfiles { get; set; }
+        public DbSet<KebabOwnership> KebabOwnerships { get; set;}
 	}
 }
