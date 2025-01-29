@@ -20,7 +20,7 @@ namespace Kebab_Simulator.Core.Domain
 		public List<KebabOwnership> MyKebabs { get; set; }
 		public int Victories { get; set; }
 		public int MyProperty { get; set; }
-		public string? MySolarSystem { get; set; }
+		public string? MyRestaurant { get; set; }
 		public ProfileStatus CurrentStatus { get; set; }
 
 		public bool ProfileType { get; set; } //true, admin, false, player

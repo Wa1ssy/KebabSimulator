@@ -19,7 +19,5 @@ namespace Kebab_Simulator.Data
 		public DbSet<Galaxy> Galaxies { get; set; }
 		public DbSet<IdentityRole> IdentityRoles { get; set; }
 		public DbSet<PlayerProfile> PlayerProfiles { get; set; }
-		public DbSet<AstralBody> AstralBodies { get; set; }
-		public DbSet<SolarSystem> SolarSystems { get; set; }
 	}
 }
