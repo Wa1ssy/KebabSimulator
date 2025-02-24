@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Kebab_Simulator.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class NIKITA : Migration
+    public partial class afafa : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,7 +54,7 @@ namespace Kebab_Simulator.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FileToDatabase",
+                name: "FilesToDatabase",
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -64,7 +64,7 @@ namespace Kebab_Simulator.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FileToDatabase", x => x.ID);
+                    table.PrimaryKey("PK_FilesToDatabase", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -313,7 +313,7 @@ namespace Kebab_Simulator.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "FileToDatabase");
+                name: "FilesToDatabase");
 
             migrationBuilder.DropTable(
                 name: "KebabOwnerships");

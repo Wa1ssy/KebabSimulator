@@ -116,7 +116,7 @@ namespace Kebab_Simulator.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("FileToDatabase");
+                    b.ToTable("FilesToDatabase");
                 });
 
             modelBuilder.Entity("Kebab_Simulator.Core.Domain.Kebab", b =>

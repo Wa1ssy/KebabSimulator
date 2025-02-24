@@ -15,6 +15,6 @@ namespace Kebab_Simulator.Models.Accounts
         [Compare("Password", ErrorMessage = "Password and its confirmation do not match. Please try again")]
         public string ConfirmPassword { get; set; }
         public string City { get; set; }
-
-    }
+		public bool ProfileType { get; set; }
+	}
 }

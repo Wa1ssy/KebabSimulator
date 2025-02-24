@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Kebab_Simulator.Security;
+using Kebab_Simulator.Core.ServiceInterface;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IKebabSimulatorServices, KebabServices>();
 builder.Services.AddScoped<IFileServices, FileServices>();
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IEmailsServices, EmailsServices>();
+builder.Services.AddScoped<IAccountsServices, AccountsServices>();
+builder.Services.AddScoped<IPlayerProfilesServices, PlayerProfilesServices>();
 builder.Services.AddDbContext<KebabSimulatorContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>

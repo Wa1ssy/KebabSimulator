@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Kebab_Simulator.Core.ServiceInterface
 {
-    public interface IEmailsServices
-    {
-        void SendEmail(EmailDto dto);
-        void SendEmailToken(EmailTokenDto dto, string token);
-    }
+	public interface IEmailsServices
+	{
+		void SendEmail(EmailDto dto);
+		void SendEmailToken(EmailTokenDto dto, string token);
+	}
 }
