@@ -1,4 +1,7 @@
 ﻿using Kebab_Simulator.Core.Domain;
+using Kebab_Simulator.Core.Domain.Dto;
+using Kebab_Simulator.Core.Domain.Serviceinterface;
+using Kebab_Simulator.Core.ServiceInterface;
 using Kebab_Simulator.Data;
 using Kebab_Simulator.Models;
 using Kebab_Simulator.Models.Accounts;
@@ -14,16 +17,22 @@ namespace Kebab_Simulator.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly KebabSimulatorContext _context;
+        private readonly IEmailsServices _emailsServices;
+        private readonly IPlayerProfilesServices _playerProfilesServices;
 
         public AccountsController
             (UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            KebabSimulatorContext context
+            KebabSimulatorContext context,
+            IEmailsServices emailsServices,
+            IPlayerProfilesServices playerProfilesServices
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _playerProfilesServices = playerProfilesServices;
+			_emailsServices = emailsServices;
         }
         [HttpGet]
         public async Task<IActionResult> AddPassword()
@@ -200,24 +209,20 @@ namespace Kebab_Simulator.Controllers
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                     var confirmationLink = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, token = token }, Request.Scheme);
-                    if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+
+					EmailTokenDto newsignup = new();
+					newsignup.Token = token;
+					newsignup.Body = $"Thank you for signing up, klikka här:  {confirmationLink}";
+					newsignup.Subject = "GalacticTitans Register";
+					newsignup.To = user.Email;
+
+					_emailsServices.SendEmailToken(newsignup, token);
+
+					if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                     {
                         return RedirectToAction("ListUsers", "Administrations");
                     }
 
-                    List<string> errordatas =
-                        [
-                        "Area", "Accounts",
-                        "Issue", "Success",
-                        "StatusMessage", "Registration Success",
-                        "ActedOn", $"{model.Email}",
-                        "CreatedAccountData", $"{model.Email}\n{model.City}\n[password hidden]\n[password hidden]"
-                        ];
-                    ViewBag.ErrorDatas = errordatas;
-                    ViewBag.ErrorTitle = "You have successfully registered";
-                    ViewBag.ErrorMessage = "Before you can log in, please confirm email from the link" +
-                        "\nwe have emailed to your email address.";
-                    return View("~/Views/Shared/Error.cshtml", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
                 }
                 foreach (var error in result.Errors)
                 {
@@ -227,29 +232,50 @@ namespace Kebab_Simulator.Controllers
             return View();
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(string userId, string token)
-        {
-            if (userId == null || token == null) { return RedirectToAction("Index", "Home"); }
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                ViewBag.ErrorMessage = $"The user with id of {userId} is not valid";
-                return View("NotFound");
-            }
-            var result = await _userManager.ConfirmEmailAsync(user, token);
-            if (result.Succeeded)
-            {
-                return View();
-            }
-            ViewBag.ErrorTitle = "Email cannot be confirmed";
-            ViewBag.ErrorMessage = $"The users email, with userid of {userId}, cannot be confirmed.";
-            return View("Error");
-        }
+		[HttpGet]
+		[AllowAnonymous]
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+		public async Task<IActionResult> ConfirmEmail(string userId, string token)
+		{
+			if (userId == null || token == null) { return RedirectToAction("Index", "Home"); }
+			var user = await _userManager.FindByIdAsync(userId);
+			if (user == null)
+			{
+				ViewBag.ErrorMessage = $"The user with id of {userId} is not valid";
+				return View("NotFound");
+			}
+			var result = await _userManager.ConfirmEmailAsync(user, token);
+			List<string> errordatas =
+						[
+						"Area", "Accounts",
+						"Issue", "Failure",
+						"StatusMessage", "Confirmation Failure",
+						"ActedOn", $"{user.Email}",
+						"CreatedAccountData", $"{user.Email}\n{user.City}\n[password hidden]\n[password hidden]"
+						];
+			if (result.Succeeded)
+			{
+				errordatas =
+						[
+						"Area", "Accounts",
+						"Issue", "Success",
+						"StatusMessage", "Confirmation Success",
+						"ActedOn", $"{user.Email}",
+						"CreatedAccountData", $"{user.Email}\n{user.City}\n[password hidden]\n[password hidden]"
+						];
+				ViewBag.ErrorDatas = errordatas;
+				return View();
 
-        // user login & logout methods
-        [HttpGet]
+			}
+
+			ViewBag.ErrorDatas = errordatas;
+			ViewBag.ErrorTitle = "Email cannot be confirmed";
+			ViewBag.ErrorMessage = $"The users email, with userid of {userId}, cannot be confirmed.";
+			return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
+
+		// user login & logout methods
+		[HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string? returnURL)
         {
@@ -262,42 +288,42 @@ namespace Kebab_Simulator.Controllers
             return View(vm);
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginViewModel model, string? returnURL)
-        {
-            // extval
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.FindByEmailAsync(model.Email);
+		[HttpPost]
+		[AllowAnonymous]
+		public async Task<IActionResult> Login(LoginViewModel model, string? returnURL)
+		{
+			// extval
+			if (ModelState.IsValid)
+			{
+				var user = await _userManager.FindByEmailAsync(model.Email);
 
-                if (user != null && !user.EmailConfirmed && (await _userManager.CheckPasswordAsync(user, model.Password)))
-                {
-                    ModelState.AddModelError(string.Empty, "Your email hasn't been confirmed yet. Please check your Email spam folders.");
-                    return View(model);
-                }
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
-                if (result.Succeeded)
-                {
-                    if (!string.IsNullOrEmpty(returnURL) && Url.IsLocalUrl(returnURL))
-                    {
-                        return Redirect(returnURL);
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                }
-                if (result.IsLockedOut)
-                {
-                    return View("AccountLocked");
-                }
-                ModelState.AddModelError("", "Invalid Login Attempt, please contact admin.");
-            }
-            return View(model);
-        }
+				if (user != null && !user.EmailConfirmed && (await _userManager.CheckPasswordAsync(user, model.Password)))
+				{
+					ModelState.AddModelError(string.Empty, "Your email hasn't been confirmed yet. Please check your Email spam folders.");
+					return View(model);
+				}
+				var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
+				if (result.Succeeded)
+				{
+					if (!string.IsNullOrEmpty(returnURL) && Url.IsLocalUrl(returnURL))
+					{
+						return Redirect(returnURL);
+					}
+					else
+					{
+						return RedirectToAction("Index", "Home");
+					}
+				}
+				if (result.IsLockedOut)
+				{
+					return View("AccountLocked");
+				}
+				ModelState.AddModelError("", "Invalid Login Attempt, please contact admin.");
+			}
+			return View(model);
+		}
 
-        [HttpPost]
+		[HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

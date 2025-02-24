@@ -47,7 +47,7 @@ namespace Kebab_Simulator.ApplicationServices.Services
                 }
             }
         }
-		public void UploadFilesToDatabase(AstralBodyDto dto, AstralBody domain)
+		/*public void UploadFilesToDatabase(AstralBodyDto dto, AstralBody domain)
 		{
 			if (dto.Files != null && dto.Files.Count > 0)
 			{
@@ -69,7 +69,7 @@ namespace Kebab_Simulator.ApplicationServices.Services
 					}
 				}
 			}
-		}
+		}*/
 		public async Task<FileToDatabase> RemoveImageFromDatabase(FileToDatabaseDto dto)
         {
             var imageID = await _context.FilesToDatabase
