@@ -11,6 +11,7 @@ namespace Kebab_Simulator.Core.Domain.Dto
         public Guid ID { get; set; }
         public string ImageTitle { get; set; }
         public byte[] ImageData { get; set; }
-        public Guid? KebabID { get; set; }
-    }
+		public Guid? KebabID { get; set; }
+		public Guid? CountryID { get; set; }
+	}
 }
