@@ -23,8 +23,4 @@
     <ProjectReference Include="..\Kebab Simulator.Data\Kebab Simulator.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\KebabBodies\" />
-  </ItemGroup>
-
 </Project>

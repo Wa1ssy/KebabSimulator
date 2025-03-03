@@ -47,7 +47,7 @@ namespace Kebab_Simulator.ApplicationServices.Services
                 }
             }
         }
-		/*public void UploadFilesToDatabase(AstralBodyDto dto, AstralBody domain)
+		public void UploadFilesToDatabase(RestaurantDto dto, Restaurant domain)
 		{
 			if (dto.Files != null && dto.Files.Count > 0)
 			{
@@ -59,7 +59,7 @@ namespace Kebab_Simulator.ApplicationServices.Services
 						{
 							ID = Guid.NewGuid(),
 							ImageTitle = image.FileName,
-							AstralBodyID = domain.ID
+							RestaurantID = domain.ID
 						};
 
 						image.CopyTo(target);
@@ -69,7 +69,7 @@ namespace Kebab_Simulator.ApplicationServices.Services
 					}
 				}
 			}
-		}*/
+		}
 		public async Task<FileToDatabase> RemoveImageFromDatabase(FileToDatabaseDto dto)
         {
             var imageID = await _context.FilesToDatabase
