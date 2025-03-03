@@ -5,11 +5,11 @@ namespace Kebab_Simulator.Models.KebabBodies
 	public class CountryDeleteViewModel
 	{
 		public Guid ID { get; set; }
-		public string Country { get; set; }
+		public string Name { get; set; }
 		public CountryType CountryType { get; set; }
-		public List<Guid> RestaurantIDs { get; set; } = new List<Guid>();
+		public List<CountryImageViewModel> Image { get; set; } = new();
+		public List<IFormFile> Files { get; set; }
 		public DateTime CreatedAt { get; set; }
 		public DateTime UpdatedAt { get; set; }
-		public List<RestaurantIndexViewModel>? Restaurants { get; set; } = new();
 	}
 }

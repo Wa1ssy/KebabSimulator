@@ -14,7 +14,6 @@ namespace Kebab_Simulator.Data
 		public DbSet<Kebab> Kebabs { get; set; }
 		public DbSet<IdentityRole> IdentityRoles { get; set; }
 		public DbSet<Country> Countries { get; set; }
-		public DbSet<Restaurant> Restaurants { get; set; }
 		public DbSet<PlayerProfile> PlayerProfiles { get; set; }
 		public DbSet<KebabOwnership> KebabOwnerships { get; set; }
 	}
