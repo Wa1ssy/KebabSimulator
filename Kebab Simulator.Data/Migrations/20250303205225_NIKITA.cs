@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Kebab_Simulator.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class afafa : Migration
+    public partial class NIKITA : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,13 +54,30 @@ namespace Kebab_Simulator.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Countries",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CountryType = table.Column<int>(type: "int", nullable: false),
+                    RestaurantIDs = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Countries", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FilesToDatabase",
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ImageTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageData = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    KebabID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    KebabID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CountryID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -311,6 +328,9 @@ namespace Kebab_Simulator.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Countries");
 
             migrationBuilder.DropTable(
                 name: "FilesToDatabase");
