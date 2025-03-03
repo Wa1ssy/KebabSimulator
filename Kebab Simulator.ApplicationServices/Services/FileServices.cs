@@ -12,42 +12,21 @@ using System.Threading.Tasks;
 
 namespace Kebab_Simulator.ApplicationServices.Services
 {
-    public class FileServices : IFileServices
-    {
-        private readonly IHostEnvironment _webHost;
-        private readonly KebabSimulatorContext _context;
+	public class FileServices : IFileServices
+	{
+		private readonly IHostEnvironment _webHost;
+		private readonly KebabSimulatorContext _context;
 
-        public FileServices
-            (
-            IHostEnvironment webHost,
-            KebabSimulatorContext context
-            )
-        {
-            _webHost = webHost;
-            _context = context;
-        }
-        public void UploadFilesToDatabase(KebabDto dto, Kebab domain)
-        {
-            if (dto.Files != null && dto.Files.Count > 0)
-            {
-                foreach (var image in dto.Files)
-                {
-                    using (var target = new MemoryStream())
-                    {
-                        FileToDatabase files = new FileToDatabase()
-                        {
-                            ID = Guid.NewGuid(),
-                            ImageTitle = image.FileName,
-                            KebabID = domain.ID,
-                        };
-                        image.CopyTo(target);
-                        files.ImageData = target.ToArray();
-                        _context.FilesToDatabase.Add(files);
-                    }
-                }
-            }
-        }
-		public void UploadFilesToDatabase(RestaurantDto dto, Restaurant domain)
+		public FileServices
+			(
+			IHostEnvironment webHost,
+			KebabSimulatorContext context
+			)
+		{
+			_webHost = webHost;
+			_context = context;
+		}
+		public void UploadFilesToDatabase(KebabDto dto, Kebab domain)
 		{
 			if (dto.Files != null && dto.Files.Count > 0)
 			{
@@ -59,7 +38,28 @@ namespace Kebab_Simulator.ApplicationServices.Services
 						{
 							ID = Guid.NewGuid(),
 							ImageTitle = image.FileName,
-							RestaurantID = domain.ID
+							KebabID = domain.ID,
+						};
+						image.CopyTo(target);
+						files.ImageData = target.ToArray();
+						_context.FilesToDatabase.Add(files);
+					}
+				}
+			}
+		}
+		public void UploadFilesToDatabase(CountryDto dto, Country domain)
+		{
+			if (dto.Files != null && dto.Files.Count > 0)
+			{
+				foreach (var image in dto.Files)
+				{
+					using (var target = new MemoryStream())
+					{
+						FileToDatabase files = new FileToDatabase()
+						{
+							ID = Guid.NewGuid(),
+							ImageTitle = image.FileName,
+							CountryID = domain.ID
 						};
 
 						image.CopyTo(target);
@@ -71,21 +71,21 @@ namespace Kebab_Simulator.ApplicationServices.Services
 			}
 		}
 		public async Task<FileToDatabase> RemoveImageFromDatabase(FileToDatabaseDto dto)
-        {
-            var imageID = await _context.FilesToDatabase
-                .FirstOrDefaultAsync(x => x.ID == dto.ID);
-            var filePath = _webHost.ContentRootPath + "\\multipleFileUpload\\" + imageID.ImageData;
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
+		{
+			var imageID = await _context.FilesToDatabase
+				.FirstOrDefaultAsync(x => x.ID == dto.ID);
+			var filePath = _webHost.ContentRootPath + "\\multipleFileUpload\\" + imageID.ImageData;
+			if (File.Exists(filePath))
+			{
+				File.Delete(filePath);
+			}
 
-            _context.FilesToDatabase.Remove(imageID);
-            await _context.SaveChangesAsync();
+			_context.FilesToDatabase.Remove(imageID);
+			await _context.SaveChangesAsync();
 
-            return null;
+			return null;
 
 
-        }
-    }
+		}
+	}
 }

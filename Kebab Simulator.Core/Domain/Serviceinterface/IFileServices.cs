@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Kebab_Simulator.Core.Domain.Serviceinterface
 {
-    public interface IFileServices
-    {
-        void UploadFilesToDatabase(KebabDto dto, Kebab domain);
-		void UploadFilesToDatabase(RestaurantDto dto, Restaurant domain);
+	public interface IFileServices
+	{
+		void UploadFilesToDatabase(KebabDto dto, Kebab domain);
+		void UploadFilesToDatabase(CountryDto dto, Country domain);
 		Task<FileToDatabase> RemoveImageFromDatabase(FileToDatabaseDto dto);
 
-    }
+	}
 }
