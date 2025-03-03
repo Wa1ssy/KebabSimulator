@@ -1,0 +1,30 @@
+﻿@model Kebab_Simulator.Models.KebabBodies.CountryCreateViewModel
+
+@{
+    ViewData["Title"] = "Edit Country";
+}
+
+<h2>Edit @Model.Name</h2>
+
+<form asp-action="Update" enctype="multipart/form-data">
+    <input type="hidden" asp-for="ID" />
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CountryType" class="control-label"></label>
+        <select asp-for="CountryType" class="form-control"
+                asp-items="Html.GetEnumSelectList<Kebab_Simulator.Core.Domain.CountryType>()"></select>
+    </div>
+
+    <partial name="_Images" model="Model" />
+    <partial name="_ImagesIndex" model="Model.Image" />
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>

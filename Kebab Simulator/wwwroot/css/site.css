@@ -1,22 +1,207 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+:root {
+    --flame-red: #FF3D00;
+    --grill-orange: #FF6D00;
+    --meat-brown: #6D4C41;
+    --fresh-green: #00C853;
+    --onion-white: #F5F5F5;
+    --spice-gradient: linear-gradient(45deg, var(--flame-red), var(--grill-orange));
 }
 
 body {
-  margin-bottom: 60px;
+    background: var(--onion-white);
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar {
+    background: var(--spice-gradient) !important;
+    box-shadow: 0 4px 15px rgba(255, 61, 0, 0.2);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link {
+    position: relative;
+    margin: 0 15px;
+    transition: all 0.3s ease;
+}
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--onion-white);
+        transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
+
+.kebab-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 1rem 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+}
+
+    .kebab-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(255, 61, 0, 0.1);
+    }
+
+.kebab-header {
+    background: var(--spice-gradient);
+    color: white;
+    padding: 4rem 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+}
+
+.btn-primary {
+    background: var(--spice-gradient);
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+    .btn-primary::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient( 120deg, transparent, rgba(255, 255, 255, 0.3), transparent );
+        transition: all 0.6s ease;
+    }
+
+    .btn-primary:hover {
+        box-shadow: 0 5px 15px rgba(255, 61, 0, 0.3);
+        transform: translateY(-2px);
+    }
+
+        .btn-primary:hover::after {
+            left: 100%;
+        }
+
+.table {
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+    background: transparent;
+}
+
+    .table thead {
+        background: var(--spice-gradient);
+        color: white;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+        .table thead th {
+            border: none !important;
+            padding: 1.2rem;
+        }
+
+    .table tbody tr {
+        background: white;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border-radius: 10px;
+    }
+
+        .table tbody tr:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transform: translateX(10px);
+        }
+
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.status-active {
+    background: var(--fresh-green);
+}
+
+.status-inactive {
+    background: var(--meat-brown);
+}
+
+.form-control {
+    border-radius: 50px;
+    padding: 1rem 1.5rem;
+    border: 2px solid #eee;
+    transition: all 0.3s ease;
+}
+
+    .form-control:focus {
+        border-color: var(--flame-red);
+        box-shadow: 0 0 0 3px rgba(255, 61, 0, 0.1);
+    }
+
+.fab {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.form-check-input:checked {
+    background-color: var(--flame-red);
+    border-color: var(--flame-red);
+}
+
+@media (max-width: 768px) {
+    .kebab-header {
+        padding: 3rem 1rem;
+    }
+
+    .table-responsive {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+}
+
+.footer {
+    background: var(--meat-brown);
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: auto;
+    padding: 2rem 0;
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transform: translateY(10px);
+    opacity: 0;
+    display: block;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.show .dropdown-menu {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
 }
