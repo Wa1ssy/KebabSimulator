@@ -10,7 +10,7 @@
     }
     public enum KebabStatus
     {
-        Making, Done
+        Making, Done, Not_Working
     }
     public class KebabIndexViewModel
     {
