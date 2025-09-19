@@ -1,41 +1,52 @@
-:root {
+﻿:root {
     --flame-red: #FF3D00;
     --grill-orange: #FF6D00;
     --meat-brown: #6D4C41;
     --fresh-green: #00C853;
     --onion-white: #F5F5F5;
     --spice-gradient: linear-gradient(45deg, var(--flame-red), var(--grill-orange));
+    --dark-charcoal: #2B2B2B;
+    --cream: #FFF8E1;
 }
 
 body {
-    background: var(--onion-white);
+    background: var(--cream);
+    color: var(--dark-charcoal);
     font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
+/* Ülemine nav / päis */
 .navbar {
     background: var(--spice-gradient) !important;
-    box-shadow: 0 4px 15px rgba(255, 61, 0, 0.2);
-}
-
-.navbar-brand {
+    box-shadow: 0 4px 15px rgba(255, 61, 0, 0.3);
+    padding: 1rem 2rem;
+    color: white;
+    font-size: 1.5rem;
     font-weight: 700;
-    letter-spacing: 1.5px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.nav-link {
+    letter-spacing: 1px;
     position: relative;
-    margin: 0 15px;
-    transition: all 0.3s ease;
+    z-index: 100;
 }
 
-    .nav-link::after {
+    .navbar .navbar-brand {
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+.nav-item .nav-link {
+    color: white !important;
+    margin: 0 0.75rem;
+    position: relative;
+}
+
+    .nav-item .nav-link::after {
         content: '';
         position: absolute;
-        bottom: 0;
+        bottom: -3px;
         left: 0;
         width: 0;
         height: 2px;
@@ -43,92 +54,121 @@ body {
         transition: width 0.3s ease;
     }
 
-    .nav-link:hover::after {
+    .nav-item .nav-link:hover::after {
         width: 100%;
     }
 
-.kebab-card {
-    background: white;
-    border-radius: 15px;
-    padding: 2rem;
-    margin: 1rem 0;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: none;
-}
-
-    .kebab-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(255, 61, 0, 0.1);
-    }
-
+/* Päise/grilli efekt */
 .kebab-header {
     background: var(--spice-gradient);
     color: white;
-    padding: 4rem 2rem;
-    margin-bottom: 2rem;
+    padding: 3rem 1rem;
     text-align: center;
-    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
-}
-
-.btn-primary {
-    background: var(--spice-gradient);
-    border: none;
-    padding: 0.8rem 2rem;
-    border-radius: 50px;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
     position: relative;
     overflow: hidden;
-    transition: all 0.3s ease;
 }
 
-    .btn-primary::after {
+    .kebab-header::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 200%;
+        height: 100%;
+        background: repeating-linear-gradient( -45deg, rgba(255,255,255,0.1) 0, rgba(255,255,255,0.1) 20px, transparent 20px, transparent 40px );
+        animation: grillSmoke 7s linear infinite;
+        pointer-events: none;
+    }
+
+@keyframes grillSmoke {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(50%);
+    }
+}
+
+/* HUD / mängu info */
+.hud-panel {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(0,0,0,0.75);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+    font-size: 1rem;
+    z-index: 200;
+}
+
+/* Nupud */
+.btn-primary, .btn-wrap, button {
+    background: var(--spice-gradient);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+    .btn-primary:hover, .btn-wrap:hover, button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(255, 61, 0, 0.4);
+    }
+
+    .btn-primary::after, .btn-wrap::after, button::after {
         content: '';
         position: absolute;
         top: 0;
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient( 120deg, transparent, rgba(255, 255, 255, 0.3), transparent );
-        transition: all 0.6s ease;
+        background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+        transition: left 0.5s ease;
     }
 
-    .btn-primary:hover {
-        box-shadow: 0 5px 15px rgba(255, 61, 0, 0.3);
-        transform: translateY(-2px);
+    .btn-primary:hover::after, .btn-wrap:hover::after, button:hover::after {
+        left: 100%;
     }
 
-        .btn-primary:hover::after {
-            left: 100%;
-        }
-
-.table {
+/* Tabelid ja tellimused */
+.table, .kebab-table {
+    width: 90%;
+    margin: 2rem auto;
     border-collapse: separate;
-    border-spacing: 0 0.5rem;
-    background: transparent;
+    border-spacing: 0 0.75rem;
 }
 
-    .table thead {
+    .table thead, .kebab-table thead {
         background: var(--spice-gradient);
         color: white;
-        border-radius: 15px;
-        overflow: hidden;
     }
 
-        .table thead th {
-            border: none !important;
-            padding: 1.2rem;
+        .table thead th, .kebab-table thead th {
+            padding: 1rem 1.5rem;
+            border: none;
+            font-size: 1.1rem;
         }
 
-    .table tbody tr {
-        background: white;
-        transition: all 0.3s ease;
+    .table tbody tr, .kebab-table tbody tr {
+        background: var(--onion-white);
+        transition: background 0.3s ease, transform 0.2s ease;
         cursor: pointer;
-        border-radius: 10px;
     }
 
-        .table tbody tr:hover {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transform: translateX(10px);
+        .table tbody tr:hover, .kebab-table tbody tr:hover {
+            background: var(--cream);
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
 .status-indicator {
@@ -139,69 +179,60 @@ body {
     margin-right: 8px;
 }
 
-.status-active {
-    background: var(--fresh-green);
+.status-active .status-indicator, .status-active {
+    /* paneme leek-ikooni ette */
+    color: var(--fresh-green);
 }
 
-.status-inactive {
-    background: var(--meat-brown);
+.status-inactive .status-indicator, .status-inactive {
+    color: var(--meat-brown);
 }
 
+/* Vormid ja sisendid */
 .form-control {
     border-radius: 50px;
-    padding: 1rem 1.5rem;
-    border: 2px solid #eee;
-    transition: all 0.3s ease;
+    padding: 0.8rem 1.5rem;
+    border: 2px solid #ddd;
+    background: white;
+    transition: border-color 0.3s ease, box-shadow 0.2s ease;
 }
 
     .form-control:focus {
         border-color: var(--flame-red);
-        box-shadow: 0 0 0 3px rgba(255, 61, 0, 0.1);
+        box-shadow: 0 0 0 4px rgba(255,61,0,0.3);
+        outline: none;
     }
 
-.fab {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    z-index: 1000;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.form-check-input:checked {
-    background-color: var(--flame-red);
-    border-color: var(--flame-red);
-}
-
-@media (max-width: 768px) {
-    .kebab-header {
-        padding: 3rem 1rem;
-    }
-
-    .table-responsive {
-        border-radius: 15px;
-        overflow: hidden;
-    }
-}
-
+/* Footer */
 .footer {
     background: var(--meat-brown);
-    color: rgba(255, 255, 255, 0.8);
-    margin-top: auto;
+    color: #FFFDE7;
     padding: 2rem 0;
+    text-align: center;
+    margin-top: auto;
+    font-size: 0.9rem;
 }
 
-.dropdown-menu {
-    border: none;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    transform: translateY(10px);
-    opacity: 0;
-    display: block;
-    transition: all 0.3s ease;
-    pointer-events: none;
-}
+/* Mobile responsive parandus */
+@media (max-width: 768px) {
+    .hud-panel {
+        top: auto;
+        bottom: 1rem;
+        right: 1rem;
+        font-size: 0.9rem;
+    }
 
-.show .dropdown-menu {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: all;
+    .navbar {
+        font-size: 1.25rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .table, .kebab-table {
+        width: 100%;
+        margin: 1rem 0;
+    }
+
+    .kebab-header {
+        padding: 2rem 1rem;
+    }
 }
