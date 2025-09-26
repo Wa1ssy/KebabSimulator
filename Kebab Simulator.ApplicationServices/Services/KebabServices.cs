@@ -39,7 +39,7 @@ namespace Kebab_Simulator.ApplicationServices.Services
             kebab.KebabXP = 0;
             kebab.KebabXPNextLevel = 100;
             kebab.KebabLevel = 0;
-            kebab.KebabStatus = Core.Domain.KebabStatus.Making;
+            kebab.KebabStatus = Core.Domain.KebabStatus.Cooking;
             kebab.KebabStart = DateTime.Now;
             kebab.KebabDone = DateTime.Parse("01/01/999 00:00:00");
 
@@ -75,7 +75,7 @@ namespace Kebab_Simulator.ApplicationServices.Services
             kebab.KebabXP = dto.KebabXP;
             kebab.KebabXPNextLevel = dto.KebabXPNextLevel;
             kebab.KebabLevel = 0;
-            kebab.KebabStatus = Core.Domain.KebabStatus.Making;
+            kebab.KebabStatus = Core.Domain.KebabStatus.Cooking;
             kebab.KebabStart = DateTime.Now;
             kebab.KebabDone = (DateTime)dto.KebabDone;
 

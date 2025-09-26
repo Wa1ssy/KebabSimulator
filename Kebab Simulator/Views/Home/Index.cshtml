@@ -35,5 +35,49 @@
 }
 else
 {
-    <p>Palun logi sisse, et näha sisu.</p>
+    <div class="not-logged-in-message">
+        <h2>😕 You are not logged in yet</h2>
+        <p>To start building your kebab business, please <a asp-controller="Accounts" asp-action="Login" class="login-link">log in</a> or <a asp-controller="Accounts" asp-action="Register" class="register-link">create an account</a>.</p>
+    </div>
 }
+
+<style>
+    .not-logged-in-message {
+        max-width: 500px;
+        margin: 40px auto;
+        padding: 30px;
+        border: 2px solid #ff6f61;
+        border-radius: 10px;
+        background: #fff3f0;
+        text-align: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #b03a2e;
+        box-shadow: 0 4px 12px rgba(255, 111, 97, 0.3);
+    }
+
+        .not-logged-in-message h2 {
+            margin-bottom: 15px;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .not-logged-in-message p {
+            font-size: 1.1rem;
+            margin-bottom: 0;
+        }
+
+        .not-logged-in-message a.login-link,
+        .not-logged-in-message a.register-link {
+            color: #ff6f61;
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+            .not-logged-in-message a.login-link:hover,
+            .not-logged-in-message a.register-link:hover {
+                border-color: #b03a2e;
+            }
+</style>
+

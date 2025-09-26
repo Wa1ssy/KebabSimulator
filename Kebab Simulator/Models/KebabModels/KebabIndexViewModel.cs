@@ -10,7 +10,11 @@
     }
     public enum KebabStatus
     {
-        Making, Done, Not_Working
+        Raw,
+        Cooking,
+        Cooked,
+        ReadyToServe,
+        Sold
     }
     public class KebabIndexViewModel
     {

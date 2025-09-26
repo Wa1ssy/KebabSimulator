@@ -2,7 +2,7 @@
    VARIABLES
 ======================== */
 :root {
-    --mint-light: #E2FCEF;
+    --mint-light: #ffffff;
     --fuchsia: #9E2B25;
     --plum-dark: #FF9B71;
     --wine: #9E2B25;
@@ -108,7 +108,7 @@ a {
 
     .kebab-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 12px 36px rgba(230,57,155,0.25);
+        box-shadow: 0 12px 36px rgba(158, 43, 37, 0.25);
     }
 
 .btn-primary {

@@ -16,7 +16,11 @@ namespace Kebab_Simulator.Core.Domain
     }
     public enum KebabStatus
     {
-        Making, Done
+        Raw,
+        Cooking,
+        Cooked,
+        ReadyToServe,
+        Sold
     }
     public class Kebab
     {
