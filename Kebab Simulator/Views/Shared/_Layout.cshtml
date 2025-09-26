@@ -23,16 +23,21 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Kebab" asp-action="Index">Kebab</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="KebabBodies" asp-action="Index">Countries</a>
-                        </li>
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <!-- Nähtav ainult sisse loginud kasutajatele (Player, Admin) -->
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Kebab" asp-action="Index">Kebab</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="KebabBodies" asp-action="Index">Countries</a>
+                            </li>
+                        }
                     </ul>
+
                      @* user login section on the navbar*@
                     <ul class="navbar-nav ml-auto">
                         @if (signInManager.IsSignedIn(User))

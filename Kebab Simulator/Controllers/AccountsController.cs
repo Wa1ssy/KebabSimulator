@@ -3,7 +3,6 @@ using Kebab_Simulator.Core.Domain.Dto;
 using Kebab_Simulator.Core.Domain.Serviceinterface;
 using Kebab_Simulator.Core.ServiceInterface;
 using Kebab_Simulator.Data;
-using Kebab_Simulator.Core.Domain;
 using Kebab_Simulator.Models;
 using Kebab_Simulator.Models.Accounts;
 using Microsoft.AspNetCore.Authorization;
@@ -27,6 +26,7 @@ namespace Kebab_Simulator.Controllers
             _context = context;
             _emailServices = emailsservices;
         }
+
         [HttpGet]
         public async Task<IActionResult> AddPassword()
         {
@@ -198,13 +198,16 @@ namespace Kebab_Simulator.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    // 👉 Uuele kasutajale lisatakse Player roll
+                    await _userManager.AddToRoleAsync(user, "Player");
+
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                     var confirmationLink = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, token = token }, Request.Scheme);
 
                     EmailTokenDto newsignup = new();
                     newsignup.Token = token;
-                    newsignup.Body = $"Thank you for signing up, klikka här:  {confirmationLink}";
+                    newsignup.Body = $"Thank you for signing up, click here: {confirmationLink}";
                     newsignup.Subject = "Register";
                     newsignup.To = user.Email;
 
@@ -214,15 +217,6 @@ namespace Kebab_Simulator.Controllers
                         return RedirectToAction("ListUsers", "Administrations");
                     }
 
-                    List<string> errordatas =
-                        [
-                        "Area", "Accounts",
-                        "Issue", "Success",
-                        "StatusMessage", "Registration Success",
-                        "ActedOn", $"{model.Email}",
-                        "CreatedAccountData", $"{model.Email}\n{model.City}\n[password hidden]\n[password hidden]"
-                        ];
-                    ViewBag.ErrorDatas = errordatas;
                     ViewBag.ErrorTitle = "You have successfully registered";
                     ViewBag.ErrorMessage = "Before you can log in, please confirm email from the link" +
                         "\nwe have emailed to your email address.";
@@ -249,30 +243,13 @@ namespace Kebab_Simulator.Controllers
                 return View("NotFound");
             }
             var result = await _userManager.ConfirmEmailAsync(user, token);
-            List<string> errordatas =
-                        [
-                        "Area", "Accounts",
-                        "Issue", "Failure",
-                        "StatusMessage", "Confirmation Failure",
-                        "ActedOn", $"{user.Email}",
-                        "CreatedAccountData", $"{user.Email}\n{user.City}\n[password hidden]\n[password hidden]"
-                        ];
             if (result.Succeeded)
             {
-                errordatas =
-                        [
-                        "Area", "Accounts",
-                        "Issue", "Success",
-                        "StatusMessage", "Confirmation Success",
-                        "ActedOn", $"{user.Email}",
-                        "CreatedAccountData", $"{user.Email}\n{user.City}\n[password hidden]\n[password hidden]"
-                        ];
-                ViewBag.ErrorDatas = errordatas;
+                ViewBag.ErrorTitle = "Email confirmed";
+                ViewBag.ErrorMessage = "Your email has been confirmed successfully.";
                 return View();
-
             }
 
-            ViewBag.ErrorDatas = errordatas;
             ViewBag.ErrorTitle = "Email cannot be confirmed";
             ViewBag.ErrorMessage = $"The users email, with userid of {userId}, cannot be confirmed.";
             return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
@@ -302,12 +279,17 @@ namespace Kebab_Simulator.Controllers
                     ModelState.AddModelError(string.Empty, "Your email hasn't been confirmed yet. Please check your Email spam folders.");
                     return View(model);
                 }
+
                 var result = await _SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
                 if (result.Succeeded)
                 {
-                    if (!string.IsNullOrEmpty(returnURL) && Url.IsLocalUrl(returnURL))
+                    if (await _userManager.IsInRoleAsync(user, "Admin"))
                     {
-                        return View(returnURL);
+                        return RedirectToAction("Index", "AdminDashboard");
+                    }
+                    else if (await _userManager.IsInRoleAsync(user, "Player"))
+                    {
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {

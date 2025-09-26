@@ -4,11 +4,8 @@ using Kebab_Simulator.Core.Domain.Serviceinterface;
 using Kebab_Simulator.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Razor.TagHelpers;
 using Kebab_Simulator.Security;
 using Kebab_Simulator.Core.ServiceInterface;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +20,7 @@ builder.Services.AddScoped<ICountriesServices, CountriesServices>();
 
 builder.Services.AddDbContext<KebabSimulatorContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = true;
@@ -37,16 +35,15 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>("CustomEmailConfirmation")
     .AddDefaultUI();
 
-//all tokenss
+// Token lifespan settings
 builder.Services.Configure<DataProtectionTokenProviderOptions>(
     options => options.TokenLifespan = TimeSpan.FromHours(5)
-    );
+);
 
-//email tokens confirmation
+// Email confirmation token lifespan
 builder.Services.Configure<CustomEmailConfirmationTokenProviderOptions>(
     options => options.TokenLifespan = TimeSpan.FromDays(3)
-    );
-
+);
 
 var app = builder.Build();
 
@@ -54,7 +51,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -63,10 +59,28 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication(); // vajalik enne authorizationi
 app.UseAuthorization();
 
+// Default route
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
+
+// Create roles on startup (Admin, Player)
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    string[] roleNames = { "Admin", "Player" };
+
+    foreach (var roleName in roleNames)
+    {
+        if (!await roleManager.RoleExistsAsync(roleName))
+        {
+            await roleManager.CreateAsync(new IdentityRole(roleName));
+        }
+    }
+}
 
 app.Run();
