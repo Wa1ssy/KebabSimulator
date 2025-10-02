@@ -14,7 +14,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Kebab_Simulator</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -25,7 +25,6 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if (signInManager.IsSignedIn(User))
                         {
-                            <!-- Nähtav ainult sisse loginud kasutajatele (Player, Admin) -->
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
@@ -38,13 +37,12 @@
                         }
                     </ul>
 
-                     @* user login section on the navbar*@
                     <ul class="navbar-nav ml-auto">
                         @if (signInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
                                 <form method="post" asp-controller="Accounts" asp-action="Logout">
-                                    <button type="submit" class="nav-link btn btn-link py-0  text-white" style="width:auto; padding-top: 0.8rem;">
+                                    <button type="submit" class="nav-link btn btn-link py-0 text-white" style="width:auto; padding-top: 0.8rem;">
                                         Logout @User.Identity.Name
                                     </button>
                                 </form>
@@ -55,17 +53,32 @@
             </div>
         </nav>
     </header>
-    </div>
-    </div>
-    </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+    <div class="container-with-sides">
+        @if (signInManager.IsSignedIn(User))
+        {
+            <div class="side-image left">
+                <img src="~/images/vasak.gif" alt="Vasak pilt" />
+            </div>
+
+            <div class="side-image right">
+                <img src="~/images/parem.jpg" alt="Parem pilt" />
+            </div>
+        }
+
+        <div class="main-container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
-  
+    <footer class="footer text-center">
+        <div class="container">
+            <p>&copy; 2025 - Kebab_Simulator</p>
+        </div>
+    </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

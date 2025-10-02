@@ -70,6 +70,57 @@ a {
         width: 100%;
     }
 
+/* ========================
+   SIDE IMAGES
+======================== */
+.container-with-sides {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+}
+
+.main-container {
+    flex: 1;
+    max-width: 900px;
+    padding: 20px;
+    text-align: center;
+}
+
+.side-image {
+    position: fixed;
+    bottom: 120px;
+    width: 400px
+    z-index: 100;
+}
+
+    .side-image.left {
+        left: 20px;
+    }
+
+    .side-image.right {
+        right: 20px;
+    }
+
+    .side-image img {
+        max-width: 100%;
+        height: auto;
+    }
+
+/* ========================
+   FOOTER
+======================== */
+.footer {
+    background: var(--wine);
+    color: rgba(255,255,255,0.85);
+    margin-top: auto;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+/* ========================
+   COMPONENTS
+======================== */
 .kebab-header {
     background: linear-gradient(45deg, var(--fuchsia), var(--plum-dark), var(--fuchsia));
     background-size: 400% 400%;
@@ -111,6 +162,9 @@ a {
         box-shadow: 0 12px 36px rgba(158, 43, 37, 0.25);
     }
 
+/* ========================
+   BUTTONS
+======================== */
 .btn-primary {
     background: var(--brand-gradient);
     border: none;
@@ -142,28 +196,9 @@ a {
             left: 100%;
         }
 
-.ripple {
-    position: absolute;
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    background: rgba(255,255,255,0.3);
-    animation: rippleAnim 0.6s linear;
-    pointer-events: none;
-}
-
-@keyframes rippleAnim {
-    from {
-        transform: scale(0);
-        opacity: 1;
-    }
-
-    to {
-        transform: scale(2.5);
-        opacity: 0;
-    }
-}
-
+/* ========================
+   TABLES & FORMS
+======================== */
 .table {
     border-collapse: separate;
     border-spacing: 0 0.5rem;
@@ -197,22 +232,6 @@ a {
             transform: translateY(0);
         }
 
-.status-indicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 8px;
-}
-
-.status-active {
-    background: var(--fuchsia);
-}
-
-.status-inactive {
-    background: var(--wine);
-}
-
 .form-control {
     border-radius: 50px;
     padding: 1rem 1.5rem;
@@ -231,49 +250,9 @@ a {
     border-color: var(--fuchsia);
 }
 
-.fab {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    z-index: 1000;
-    display: none;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-
-.dropdown-menu {
-    border: none;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    visibility: hidden;
-}
-
-.show .dropdown-menu {
-    opacity: 1;
-    transform: translateY(0);
-    visibility: visible;
-}
-
-.footer {
-    background: var(--wine);
-    color: rgba(255,255,255,0.85);
-    margin-top: auto;
-    padding: 2rem 0;
-}
-
-.rounded-lg {
-    border-radius: 1rem;
-}
-
-.shadow-lg {
-    box-shadow: 0 12px 36px rgba(0,0,0,0.15);
-}
-
-.transition-all {
-    transition: var(--transition);
-}
-
+/* ========================
+   RESPONSIVE
+======================== */
 @media (max-width: 768px) {
     .navbar-brand {
         font-size: 1rem;
@@ -290,6 +269,10 @@ a {
 
     .nav-link {
         margin: 0 10px;
+    }
+
+    .side-image {
+        display: none;
     }
 }
 
