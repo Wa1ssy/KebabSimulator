@@ -4,44 +4,37 @@
     ViewBag.Title = "User Login";
 }
 
-<div class="row">
-    <div class="col-md-6">
-        <h1>Please login to your user</h1>
-        <hr/>
-        <form method="post">
+<div class="page-center">
+    <div class="">
+        <h2 class="text-center">Please login to your user</h2>
+        <hr />
+        <form method="post" class="p-4 shadow rounded bg-white">
             <div asp-validation-summary="All" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control"/>
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control border border-dark" />
                 <span asp-validation-for="Email" class="text-danger" />
             </div>
 
-            <div class="form-group">
-                <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" />
+            <div class="form-group mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control border border-dark" />
                 <span asp-validation-for="Password" class="text-danger" />
             </div>
 
-            <div class="form-group">
-                <div class="checkbox">
-                    <label asp-for="RememberMe">
-                        <input asp-for="RememberMe" />
-                        @Html.DisplayNameFor(m => m.RememberMe)
-                    </label>
-                </div>
+            <div class="form-check mb-3">
+                <input asp-for="RememberMe" class="form-check-input" />
+                <label asp-for="RememberMe" class="form-check-label"></label>
             </div>
 
-            <button type="submit" class="btn btn-primary">
-                Log in
-            </button>
-            <div>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Log in</button>
+            </div>
+
+            <div class="text-center mt-3">
                 <a asp-action="ForgotPassword">I has no passweed</a>
             </div>
-
         </form>
     </div>
-
-    @* !! extval *@
-
 </div>
