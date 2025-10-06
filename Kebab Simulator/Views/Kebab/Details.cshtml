@@ -1,50 +1,60 @@
-﻿
-@model Kebab_Simulator.Models.KebabModels.KebabDetailsViewModel
+﻿@model Kebab_Simulator.Models.KebabModels.KebabDetailsViewModel
 
-<h1> @Html.DisplayFor(model => model.KebabName)</h1>
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title text-capitalize">@Model.KebabName</h2>
+            <p class="text-muted mb-4">I need to make some quick money from kebab.</p>
 
-<div>
-    <h4>I need to make some quick money from kebab. </h4>
-    <hr />
-    <dl class="row">
-        <div class="form-group row">
-            <label asp-for="ID" class="col-sm-2" col-form-label></label>
-            @Html.DisplayFor(model => model.ID)
-        </div>
-        <div class="form-group row">
-                <label asp-for="KebabName" class="col-sm-2" col-form-label></label>
-                @Html.DisplayFor(model => model.KebabName)
-        </div>
-        <div id="imagediv">
-            @foreach (var image in Model.Image)
+            <div class="row mb-3">
+                <div class="col-sm-3 fw-bold">ID:</div>
+                <div class="col-sm-9">@Model.ID</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-3 fw-bold">Kebab Name:</div>
+                <div class="col-sm-9">@Model.KebabName</div>
+            </div>
+
+            @if (Model.Image != null && Model.Image.Any())
             {
-                <partial name="_Images" model="image" />
+                <div class="row mb-3">
+                    <div class="col-sm-3 fw-bold">Images:</div>
+                    <div class="col-sm-9 d-flex flex-wrap gap-2" id="imagediv">
+                        @foreach (var image in Model.Image)
+                        {
+                            <partial name="_Images" model="image" />
+                        }
+                    </div>
+                </div>
             }
-        </div>
-        <div class="form-group row">
-            <label asp-for="KebabXP" class="col-sm-2" col-form-label></label>
-            @Html.DisplayFor(model => model.KebabXP)
-        </div>
 
-        <div class="form-group row">
-            <label asp-for="KebabXPNextLevel" class="col-sm-2" col-form-label></label>
-            @Html.DisplayFor(model => model.KebabXPNextLevel)
-        </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 fw-bold">Kebab XP:</div>
+                <div class="col-sm-9">@Model.KebabXP</div>
+            </div>
 
-        <div class="form-group row">
-            <label asp-for="KebabStatus" class="col-sm-2" col-form-label></label>
-            @Html.DisplayFor(model => model.KebabStatus)
-        </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 fw-bold">XP to Next Level:</div>
+                <div class="col-sm-9">@Model.KebabXPNextLevel</div>
+            </div>
 
-        <div class="form-group row">
-            <label asp-for="KebabBankAccount" class="col-sm-2" col-form-label></label>
-            @Html.DisplayFor(model => model.KebabBankAccount)
-        </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 fw-bold">Status:</div>
+                <div class="col-sm-9">@Model.KebabStatus</div>
+            </div>
 
-        <div class="form-group row">
-            <label asp-for="Checkout" class="col-sm-2" col-form-label></label>
-            @Html.DisplayFor(model => model.Checkout)
+            <div class="row mb-3">
+                <div class="col-sm-3 fw-bold">Bank Account:</div>
+                <div class="col-sm-9">@Model.KebabBankAccount</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-3 fw-bold">Checkout:</div>
+                <div class="col-sm-9">@Model.Checkout</div>
+            </div>
+
+            <a asp-action="Index" asp-controller="Kebab" class="btn btn-primary">← Go Back</a>
         </div>
-    </dl>
-    <a asp-action="index" asp-controller="Kebab" class="btn btn-secondary">Go back</a>
+    </div>
 </div>

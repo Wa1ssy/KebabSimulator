@@ -20,9 +20,23 @@
         <select asp-for="CountryType" class="form-control"
                 asp-items="Html.GetEnumSelectList<Kebab_Simulator.Core.Domain.CountryType>()"></select>
     </div>
+    <div class="form-group-row">
+        <label asp-for="Files" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-5">
+            <div class="custom-file">
+                <input class="form-control custom-file-input"
+                       asp-for="Files"
+                       multiple type="file" />
+                <label class="custom-file-label">Choose Images from device -></label>
+            </div>
+        </div>
+        @foreach (var image in Model.Image)
+        {
+            <partial name="_Images" model="image" />
+            <input asp-action="removeImage" asp-controller="kebabs" asp-route-id="@image.ImageID" type="submit" class="btn btn-danger" value="DELETE DIS IMAGE" />
+        }
 
-    <partial name="_Images" model="Model" />
-    <partial name="_ImagesIndex" model="Model.Image" />
+    </div>
 
     <div class="form-group">
         <input type="submit" value="Save" class="btn btn-primary" />
