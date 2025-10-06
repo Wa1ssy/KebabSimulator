@@ -19,11 +19,11 @@
         <table class="table table-hover">
             <thead class="thead-dark">
                 <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Level</th>
-                    <th>Bank</th>
-                    <th>Actions</th>
+                    <th style="text-align: center;">#</th>
+                    <th style="text-align: center;">Name</th>
+                    <th style="text-align: center;">Level</th>
+                    <th style="text-align: center;">Bank</th>
+                    <th style="text-align: center;">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,11 +33,11 @@
                 @foreach (var Kebab in Model)
                 {
                     <tr>
-                        <td>@rowNumber</td>
-                        <td>@Kebab.KebabName</td>
-                        <td>@Kebab.KebabLevel</td>
-                        <td>@Kebab.KebabBankAccount €</td>
-                        <td>
+                        <td style="text-align: center;">@rowNumber</td>
+                        <td style="text-align: center;">@Kebab.KebabName</td>
+                        <td style="text-align: center;">@Kebab.KebabLevel</td>
+                        <td style="text-align: center;">@Kebab.KebabBankAccount €</td>
+                        <td style="text-align: center;">
                             <a asp-action="Details" asp-route-id="@Kebab.ID" class="btn btn-sm btn-info">
                                 <i class="fas fa-info-circle"></i>
                             </a>
