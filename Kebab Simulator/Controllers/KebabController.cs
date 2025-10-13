@@ -32,6 +32,7 @@ namespace Kebab_Simulator.Controllers
                     KebabName = x.KebabName,
                     KebabLevel = x.KebabLevel,
                     KebabType = (Models.KebabModels.KebabType)x.KebabType,
+                    KebabBankAccount = x.KebabBankAccount,
                 });
             return View(resultingInventory);
         }

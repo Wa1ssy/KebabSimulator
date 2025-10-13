@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kebab_Simulator.Core.Domain.Dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace Kebab_Simulator.Core.Domain
 		Indigenous,
 		MiddleEastern,
 		LatinAmerican,
+		NorthAmerican,
 	}
 	public class Country
 	{
@@ -21,7 +23,8 @@ namespace Kebab_Simulator.Core.Domain
 		public string Name { get; set; }
 		public CountryType CountryType { get; set; }
 		public List<Guid> RestaurantIDs { get; set; } = new List<Guid>();
-		public DateTime CreatedAt { get; set; }
+        public IEnumerable<FileToDatabaseDto> Image { get; set; } = new List<FileToDatabaseDto>();
+        public DateTime CreatedAt { get; set; }
 		public DateTime UpdatedAt { get; set; }
 	}
 }

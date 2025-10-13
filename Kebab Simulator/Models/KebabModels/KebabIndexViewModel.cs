@@ -4,10 +4,7 @@
     {
         Shawarma, Döner, Falafel
     }
-    public enum KebabFoods
-    {
-        tortilla, fries, kebab, salad, veggies, falafel, specialsauce
-    }
+
     public enum KebabStatus
     {
         Raw,
@@ -24,7 +21,6 @@
         public int KebabXP { get; set; }
         public int KebabXPNextLevel { get; set; }
         public int KebabLevel { get; set; }
-        public KebabFoods KebabFoods { get; set; }
         public KebabType KebabType { get; set; }
         public int Checkout { get; set; }
         public int KebabBankAccount { get; set; }

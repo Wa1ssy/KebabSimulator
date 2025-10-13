@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kebab_Simulator.Core.Domain.Dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +10,6 @@ namespace Kebab_Simulator.Core.Domain
     public enum KebabType
     {
         Shawarma, Döner, Falafel
-    }
-    public enum KebabFoods
-    {
-        tortilla, fries, kebab, salad, veggies, falafel, specialsauce
     }
     public enum KebabStatus
     {
@@ -30,9 +27,9 @@ namespace Kebab_Simulator.Core.Domain
         public int KebabXP { get; set; }
         public int KebabXPNextLevel { get; set; }
         public int KebabLevel { get; set; }
-        public KebabFoods KebabFoods { get; set; }
         public KebabType KebabType { get; set; }
         public int Checkout { get; set; }
+        public IEnumerable<FileToDatabaseDto> Image { get; set; } = new List<FileToDatabaseDto>();
         public int KebabBankAccount { get; set; }
         public DateTime KebabStart { get; set; }
         public DateTime KebabDone { get; set; }

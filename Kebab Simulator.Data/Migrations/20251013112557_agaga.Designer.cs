@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kebab_Simulator.Data.Migrations
 {
     [DbContext(typeof(KebabSimulatorContext))]
-    [Migration("20251003073427_124")]
-    partial class _124
+    [Migration("20251013112557_agaga")]
+    partial class agaga
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -153,6 +153,35 @@ namespace Kebab_Simulator.Data.Migrations
                     b.ToTable("FilesToDatabase");
                 });
 
+            modelBuilder.Entity("Kebab_Simulator.Core.Domain.Dto.FileToDatabaseDto", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CountryID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("ImageTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("KebabID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CountryID");
+
+                    b.HasIndex("KebabID");
+
+                    b.ToTable("FileToDatabaseDto");
+                });
+
             modelBuilder.Entity("Kebab_Simulator.Core.Domain.Kebab", b =>
                 {
                     b.Property<Guid>("ID")
@@ -170,9 +199,6 @@ namespace Kebab_Simulator.Data.Migrations
 
                     b.Property<DateTime>("KebabDone")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("KebabFoods")
-                        .HasColumnType("int");
 
                     b.Property<int>("KebabLevel")
                         .HasColumnType("int");
@@ -218,9 +244,6 @@ namespace Kebab_Simulator.Data.Migrations
 
                     b.Property<DateTime>("KebabDone")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("KebabFoods")
-                        .HasColumnType("int");
 
                     b.Property<int>("KebabLevel")
                         .HasColumnType("int");
@@ -438,6 +461,17 @@ namespace Kebab_Simulator.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Kebab_Simulator.Core.Domain.Dto.FileToDatabaseDto", b =>
+                {
+                    b.HasOne("Kebab_Simulator.Core.Domain.Country", null)
+                        .WithMany("Image")
+                        .HasForeignKey("CountryID");
+
+                    b.HasOne("Kebab_Simulator.Core.Domain.Kebab", null)
+                        .WithMany("Image")
+                        .HasForeignKey("KebabID");
+                });
+
             modelBuilder.Entity("Kebab_Simulator.Core.Domain.KebabOwnership", b =>
                 {
                     b.HasOne("Kebab_Simulator.Core.Domain.PlayerProfile", null)
@@ -494,6 +528,16 @@ namespace Kebab_Simulator.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Kebab_Simulator.Core.Domain.Country", b =>
+                {
+                    b.Navigation("Image");
+                });
+
+            modelBuilder.Entity("Kebab_Simulator.Core.Domain.Kebab", b =>
+                {
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("Kebab_Simulator.Core.Domain.PlayerProfile", b =>

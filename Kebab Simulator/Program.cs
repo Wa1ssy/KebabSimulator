@@ -83,4 +83,16 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<KebabSimulatorContext>();
+
+    // Optional: apply migrations if needed
+    context.Database.Migrate();
+
+    // Seed initial data
+    DbInitialize.Initialize(context);
+}
+
 app.Run();

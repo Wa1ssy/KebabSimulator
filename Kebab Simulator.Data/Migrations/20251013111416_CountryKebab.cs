@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Kebab_Simulator.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class NIKITA : Migration
+    public partial class CountryKebab : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -93,7 +93,6 @@ namespace Kebab_Simulator.Data.Migrations
                     KebabXP = table.Column<int>(type: "int", nullable: false),
                     KebabXPNextLevel = table.Column<int>(type: "int", nullable: false),
                     KebabLevel = table.Column<int>(type: "int", nullable: false),
-                    KebabFoods = table.Column<int>(type: "int", nullable: false),
                     KebabType = table.Column<int>(type: "int", nullable: false),
                     Checkout = table.Column<int>(type: "int", nullable: false),
                     KebabBankAccount = table.Column<int>(type: "int", nullable: false),
@@ -239,6 +238,31 @@ namespace Kebab_Simulator.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FileToDatabaseDto",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ImageTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageData = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    KebabID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CountryID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FileToDatabaseDto", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_FileToDatabaseDto_Countries_CountryID",
+                        column: x => x.CountryID,
+                        principalTable: "Countries",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_FileToDatabaseDto_Kebabs_KebabID",
+                        column: x => x.KebabID,
+                        principalTable: "Kebabs",
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "KebabOwnerships",
                 columns: table => new
                 {
@@ -246,7 +270,6 @@ namespace Kebab_Simulator.Data.Migrations
                     KebabXP = table.Column<int>(type: "int", nullable: false),
                     KebabXPNextLevel = table.Column<int>(type: "int", nullable: false),
                     KebabLevel = table.Column<int>(type: "int", nullable: false),
-                    KebabFoods = table.Column<int>(type: "int", nullable: false),
                     Checkout = table.Column<int>(type: "int", nullable: false),
                     KebabBankAccount = table.Column<int>(type: "int", nullable: false),
                     KebabStart = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -306,6 +329,16 @@ namespace Kebab_Simulator.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FileToDatabaseDto_CountryID",
+                table: "FileToDatabaseDto",
+                column: "CountryID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FileToDatabaseDto_KebabID",
+                table: "FileToDatabaseDto",
+                column: "KebabID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_KebabOwnerships_PlayerProfileID",
                 table: "KebabOwnerships",
                 column: "PlayerProfileID");
@@ -330,22 +363,25 @@ namespace Kebab_Simulator.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Countries");
-
-            migrationBuilder.DropTable(
                 name: "FilesToDatabase");
 
             migrationBuilder.DropTable(
-                name: "KebabOwnerships");
+                name: "FileToDatabaseDto");
 
             migrationBuilder.DropTable(
-                name: "Kebabs");
+                name: "KebabOwnerships");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Countries");
+
+            migrationBuilder.DropTable(
+                name: "Kebabs");
 
             migrationBuilder.DropTable(
                 name: "PlayerProfiles");
