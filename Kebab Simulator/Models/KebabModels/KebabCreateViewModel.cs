@@ -17,6 +17,8 @@ namespace Kebab_Simulator.Models.KebabModels
         public int KebabXPNextLevel { get; set; }
         public int KebabLevel { get; set; }
         public KebabType KebabType { get; set; }
+        public string Description { get; set; }
+        public string Ingredients { get; set; }
         public int Checkout { get; set; }
         public int KebabBankAccount { get; set; }
         public DateTime KebabStart { get; set; }

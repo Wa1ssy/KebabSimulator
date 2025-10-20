@@ -9,11 +9,26 @@ namespace Kebab_Simulator.Core.Domain.Dto
 {
     public enum KebabType
     {
-        Shawarma, Döner, Falafel
-    }
-    public enum KebabFoods
-    {
-        tortilla, fries, kebab, salad, veggies, falafel, specialsauce
+        ErzanLegacy,
+        AslansAmbition,
+        SteppeFlame,
+        NomadsFeast,
+        GoldenYurt,
+        SilkRoadSkewer,
+        FathersPride,
+        EaglesBite,
+        KazakhSun,
+        AslansRoar,
+        SteppeWhisper,
+        TravelersDelight,
+        MountainSmoke,
+        GoldenHorde,
+        MidnightCaravan,
+        EternalFlame,
+        AslansTriumph,
+        SteppeBreeze,
+        LegendsSkewer,
+        HeartOfTheStand
     }
     public enum KebabStatus
     {
@@ -31,9 +46,10 @@ namespace Kebab_Simulator.Core.Domain.Dto
         public int KebabXP { get; set; }
         public int KebabXPNextLevel { get; set; }
         public int KebabLevel { get; set; }
-        public KebabFoods KebabFoods { get; set; }
         public KebabType KebabType { get; set; }
         public int Checkout { get; set; }
+        public string Description { get; set; }
+        public string Ingredients { get; set; }
         public int KebabBankAccount { get; set; }
         public DateTime KebabStart { get; set; }
         public DateTime KebabDone { get; set; }

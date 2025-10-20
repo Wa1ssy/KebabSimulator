@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -25,6 +25,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Kebab Simulator.ApplicationServices\Kebab Simulator.ApplicationServices.csproj" />
     <ProjectReference Include="..\Kebab Simulator.Data\Kebab Simulator.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Game\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties wwwroot_4lib_4bootstrap_4dist_4css_4bootstrap-utilities_1css_1map__JsonSchema="" /></VisualStudio></ProjectExtensions>

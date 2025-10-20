@@ -14,10 +14,6 @@
                 <div class="col-sm-9">@Model.CountryType</div>
             </div>
 
-            <div class="row mb-3">
-                <div class="col-sm-3 fw-bold">Created:</div>
-                <div class="col-sm-9">@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</div>
-            </div>
 
             @if (Model.Image != null && Model.Image.Any())
             {
