@@ -14,6 +14,27 @@
 
     <div id="timer" class="display-6 my-4">@cookTime</div>
 
+    <!-- 🔥 MINI-MÄNGU ALA -->
+    <div id="minigame-area"
+         style="position: relative; width: 420px; height: 360px; margin: 40px auto; border: 2px solid #ccc; border-radius: 10px; overflow: hidden; background: #fffbe6;">
+        <p class="mt-2">🔥 Klõpsa liikuvat nuppu, et vähendada küpsetusaega!</p>
+
+        <button id="grillButton"
+                class="btn btn-warning"
+                style="position: absolute; left: 150px; top: 100px; font-size: 18px; padding: 12px 24px; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.2);">
+            Grill!
+        </button>
+
+        <div style="position: absolute; bottom: 10px; left: 0; right: 0;">
+            <p>
+                Alles jäänud aeg: <span id="timeLeftDisplay">@cookTime</span> s<br>
+                Kiirendatud: <span id="bonus">0</span> s
+            </p>
+        </div>
+    </div>
+
+    <!-- 🔥 MINI-MÄNGU ALA LÕPP -->
+
     <form asp-controller="Kebab" asp-action="Sell" method="post">
         <input type="hidden" name="recipeId" value="@Model.ID" />
         <button id="sellBtn" type="submit" class="btn btn-success btn-lg" disabled>
@@ -33,6 +54,7 @@
         const countdown = setInterval(() => {
             seconds--;
             timerDisplay.textContent = seconds;
+            document.getElementById("timeLeftDisplay").textContent = seconds;
 
             if (seconds <= 0) {
                 clearInterval(countdown);
@@ -40,5 +62,33 @@
                 sellBtn.disabled = false;
             }
         }, 1000);
+
+        const grillBtn = document.getElementById("grillButton");
+        const bonusEl = document.getElementById("bonus");
+        const container = document.getElementById("minigame-area");
+
+        let bonus = 0;
+
+               grillBtn.addEventListener("click", () => {
+            if (seconds > 1) {
+                seconds--;
+                bonus++;
+                document.getElementById("timeLeftDisplay").textContent = seconds;
+                bonusEl.textContent = bonus;
+            }
+
+            const areaWidth = container.offsetWidth - grillBtn.offsetWidth;
+            const topSafeZone = 150;
+            const bottomSafeZone = 150;
+            const areaHeight = container.offsetHeight - topSafeZone - bottomSafeZone;
+
+            const randomX = Math.floor(Math.random() * areaWidth);
+            const randomY = Math.floor(Math.random() * areaHeight) + topSafeZone;
+
+            grillBtn.style.left = randomX + "px";
+            grillBtn.style.top = randomY + "px";
+        });
+
     </script>
 }
+

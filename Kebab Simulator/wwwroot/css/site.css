@@ -90,7 +90,7 @@ a {
 .side-image {
     position: fixed;
     bottom: 120px;
-    width: 400px
+    width: 400px;
     z-index: 100;
 }
 
@@ -221,7 +221,6 @@ a {
         background: var(--onion-white);
         transition: background 0.3s ease, transform 0.2s ease;
         cursor: pointer;
-
     }
 
         .table tbody tr:hover, .kebab-table tbody tr:hover {
@@ -229,23 +228,6 @@ a {
             transform: scale(1.02);
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
-
-.status-indicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 8px;
-}
-
-.status-active .status-indicator, .status-active {
-    /* paneme leek-ikooni ette */
-    color: var(--fresh-green);
-}
-
-.status-inactive .status-indicator, .status-inactive {
-    color: var(--meat-brown);
-}
 
 /* Vormid ja sisendid */
 .form-control {
@@ -274,13 +256,6 @@ a {
 
 /* Mobile responsive parandus */
 @media (max-width: 768px) {
-    .hud-panel {
-        top: auto;
-        bottom: 1rem;
-        right: 1rem;
-        font-size: 0.9rem;
-    }
-
     .navbar {
         font-size: 1.25rem;
         padding: 0.75rem 1rem;
@@ -294,13 +269,35 @@ a {
     .kebab-header {
         padding: 2rem 1rem;
     }
-
-
-    table table-hover {
-        text-align: center !important;
-    }
-
-    thead-dark {
-        text-align: center !important;
-    }
 }
+
+/* ========================
+   HOME PAGE CENTER BUTTON
+======================== */
+.home-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 1000px); /* paneb kaardi keskele ekraanil */
+}
+
+.big-card {
+    width: 200%;
+    max-width: 600px;
+    padding: 4rem 3rem;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+}
+
+.big-btn {
+    font-size: 2.3rem;
+    padding: 1.1rem 3rem;
+    border-radius: 100px;
+    transition: all 0.3s ease;
+}
+
+    .big-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(158, 43, 37, 0.3);
+    }

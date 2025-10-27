@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Kebab_Simulator.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class gkjaskga : Migration
+    public partial class hnjsghdndghcvgvg : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

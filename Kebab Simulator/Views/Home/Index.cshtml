@@ -3,25 +3,18 @@
     ViewData["Title"] = "Home Page";
 }
 
+<div class="kebab-header">
+    <h1 class="display-4">Welcome to Kebab Simulator</h1>
+    <p class="lead">Build your kebab empire across the World!</p>
+</div>
 
-
-    <div class="kebab-header">
-        <h1 class="display-4">Welcome to Kebab Simulator</h1>
-        <p class="lead">Build your kebab empire across the World!</p>
-    </div>
-
-    @if (User.Identity.IsAuthenticated)
-    {
-
-    <div class="container">
-        <div class="row text-center">
-            <div class="col-md-4 mb-4">
-                <div class="kebab-card h-100">
-                    <h3>🔥 Fire Up the Grill</h3>
-                    <p>Time’s ticking. Flip kebabs, stack cash, and level up your hustle 💸</p>
-                    <a asp-controller="Kebab" asp-action="Index" class="btn btn-primary">Start Earning</a>
-                </div>
-            </div>
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="home-center">
+        <div class="kebab-card big-card">
+            <h2>🔥 Fire Up the Grill</h2>
+            <p>Time’s ticking. Flip kebabs, stack cash, and level up your hustle 💸</p>
+            <a asp-controller="Kebab" asp-action="Index" class="btn btn-primary big-btn">Start Earning</a>
         </div>
     </div>
 }
@@ -29,7 +22,11 @@ else
 {
     <div class="not-logged-in-message">
         <h2>😕 You are not logged in yet</h2>
-        <p>To start building your kebab business, please <a asp-controller="Accounts" asp-action="Login" class="login-link">log in</a> or <a asp-controller="Accounts" asp-action="Register" class="register-link">create an account</a>.</p>
+        <p>
+            To start building your kebab business, please
+            <a asp-controller="Accounts" asp-action="Login" class="login-link">log in</a> or
+            <a asp-controller="Accounts" asp-action="Register" class="register-link">create an account</a>.
+        </p>
     </div>
 }
 
@@ -72,4 +69,3 @@ else
                 border-color: #b03a2e;
             }
 </style>
-
