@@ -38,6 +38,7 @@
                     <th class="text-center">Name</th>
                     <th class="text-center">Level</th>
                     <th class="text-center">Bank</th>
+                    <th class="text-center">Actions:</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,6 +48,11 @@
                         <td class="text-center">@Kebab.KebabName</td>
                         <td class="text-center">@Kebab.KebabLevel</td>
                         <td class="text-center" id="bank-@Kebab.ID">@Kebab.KebabBankAccount €</td>
+                        <td style="text-align: center;">
+                            <a asp-action="Details" asp-route-id="@Kebab.ID" class="btn btn-sm btn-info">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                        </td>
                     </tr>
                 }
             </tbody>

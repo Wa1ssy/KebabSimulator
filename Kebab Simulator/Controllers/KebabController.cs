@@ -270,20 +270,15 @@ namespace Kebab_Simulator.Controllers
             if (iamge != null) { return RedirectToAction("Index"); }
             return RedirectToAction("Index");
         }
+        // ✅ STORE — cooking start
         [HttpGet]
         public async Task<IActionResult> Store(Guid recipeId)
         {
             var recipe = await _context.KebabRecipes.FirstOrDefaultAsync(r => r.ID == recipeId);
-            if (recipe == null)
-            {
-                return NotFound("Recipe not found.");
-            }
-
             var player = await _context.Kebabs.FirstOrDefaultAsync();
-            if (player == null)
-            {
-                return NotFound("Player not found.");
-            }
+
+            if (recipe == null || player == null)
+                return NotFound();
 
             if (player.KebabLevel < recipe.LevelRequired)
             {
@@ -291,13 +286,10 @@ namespace Kebab_Simulator.Controllers
                 return RedirectToAction("Index", "Marketplace");
             }
 
-            // 🧠 Calculate cook time reduction
-            // Each upgrade level = -5 seconds (minimum 10s)
             int baseTime = 30;
-            int reduction = player.Checkout * 4;
+            int reduction = player.GrillLevel * 4;
             int finalCookTime = Math.Max(10, baseTime - reduction);
 
-            // Send everything to the View
             var vm = new KebabViewModel
             {
                 ID = recipe.ID,
@@ -310,12 +302,14 @@ namespace Kebab_Simulator.Controllers
             };
 
             ViewBag.CookTime = finalCookTime;
-            ViewBag.GrillLevel = player.Checkout;
+            ViewBag.GrillLevel = player.GrillLevel;
 
-            return View("Store", vm);
+            return View("store", vm); // ✅ Ensure view name is correct
         }
 
 
+
+        // ✅ SELL — selling cooked kebab
         [HttpPost]
         public async Task<IActionResult> Sell(Guid recipeId)
         {
@@ -323,21 +317,14 @@ namespace Kebab_Simulator.Controllers
             var player = await _context.Kebabs.FirstOrDefaultAsync();
 
             if (recipe == null || player == null)
-            {
                 return NotFound();
-            }
 
-            // 💎 Calculate spice multiplier (every 1000 XPNextLevel = +10%)
-            int spiceLevel = player.KebabXPNextLevel / 1000;
-            decimal spiceMultiplier = 1 + (spiceLevel * 0.10m);
+            decimal spiceMultiplier = 1 + (player.SpiceLevel * 0.10m);
+            int finalPrice = (int)(recipe.Price * spiceMultiplier);
 
-            // 🤑 Apply spice bonus to kebab sell price
-            var finalPrice = recipe.Price * spiceMultiplier;
-
-            player.KebabBankAccount += (int)finalPrice;
-
-            // XP gain + leveling logic (unchanged)
+            player.KebabBankAccount += finalPrice;
             player.KebabXP += 20;
+
             if (player.KebabXP >= player.KebabXPNextLevel)
             {
                 player.KebabLevel++;
@@ -345,162 +332,109 @@ namespace Kebab_Simulator.Controllers
                 player.KebabXPNextLevel += 100;
             }
 
-            _context.Kebabs.Update(player);
             await _context.SaveChangesAsync();
 
-            TempData["Message"] = $"You sold {recipe.Name} for ${finalPrice:F0} (+{spiceLevel * 10}% bonus!)";
-            return RedirectToAction("Index");
+            TempData["Message"] =
+                $"You sold {recipe.Name} for ${finalPrice}! (+{player.SpiceLevel * 10}% bonus)";
+            return RedirectToAction("Index", "Marketplace");
         }
 
+
+
+        // ✅ BUY UPGRADE — player leveling system
         [HttpPost]
         public async Task<IActionResult> BuyUpgrade(string upgradeName)
         {
             var player = await _context.Kebabs.FirstOrDefaultAsync();
             if (player == null)
-            {
-                TempData["Error"] = "Player not found.";
                 return RedirectToAction("Upgrades", "Marketplace");
-            }
 
             switch (upgradeName)
             {
-                // 🔥 FASTER GRILL — reduces cook time & assistant interval by 4s per level
                 case "🔥 Faster Grill":
-                    int grillCost = 200 + (player.Checkout * 100);
-                    if (player.KebabBankAccount < grillCost)
-                    {
-                        TempData["Error"] = "Not enough money for Faster Grill!";
-                        break;
-                    }
+                    if (player.GrillLevel >= 5)
+                    { TempData["Error"] = "Grill already maxed!"; break; }
 
-                    if (player.Checkout >= 5)
-                    {
-                        TempData["Error"] = "Faster Grill is already maxed out!";
-                        break;
-                    }
+                    int grillCost = 200 + (player.GrillLevel * 100);
+                    if (player.KebabBankAccount < grillCost)
+                    { TempData["Error"] = "Not enough $"; break; }
 
                     player.KebabBankAccount -= grillCost;
-                    player.Checkout++;
-                    TempData["Message"] = $"🔥 Faster Grill upgraded to Level {player.Checkout}! Cook and passive income times reduced by 4 seconds!";
+                    player.GrillLevel++;
+                    TempData["Message"] = $"🔥 Grill Level {player.GrillLevel}!";
                     break;
 
-                // 💎 SPECIAL SPICES — increases ALL income by +10% per level
                 case "💎 Special Spices":
-                    int spiceLevel = player.KebabXPNextLevel / 1000;
-                    int spiceCost = 300 + (spiceLevel * 150);
+                    if (player.SpiceLevel >= 5)
+                    { TempData["Error"] = "Spices maxed!"; break; }
 
+                    int spiceCost = 300 + (player.SpiceLevel * 150);
                     if (player.KebabBankAccount < spiceCost)
-                    {
-                        TempData["Error"] = "Not enough money for Special Spices!";
-                        break;
-                    }
-
-                    if (spiceLevel >= 5)
-                    {
-                        TempData["Error"] = "Special Spices are already maxed out!";
-                        break;
-                    }
+                    { TempData["Error"] = "Not enough $"; break; }
 
                     player.KebabBankAccount -= spiceCost;
-                    player.KebabXPNextLevel += 1000; // each 1000 = +1 level (10% all income)
-                    TempData["Message"] = $"💎 Special Spices upgraded to Level {spiceLevel + 1}! All income increased by 10%!";
+                    player.SpiceLevel++;
+                    TempData["Message"] = $"💎 Spice Level {player.SpiceLevel}!";
                     break;
 
-                // 👨‍🍳 ASSISTANT — passive income feature
                 case "👨‍🍳 Assistant":
-                    int assistantLevel = player.Checkout > 5 ? player.Checkout - 5 : 0;
-                    int assistantCost = 500 + (assistantLevel * 200);
+                    if (player.AssistantLevel >= 3)
+                    { TempData["Error"] = "Assistant maxed!"; break; }
 
+                    int assistantCost = 500 + (player.AssistantLevel * 200);
                     if (player.KebabBankAccount < assistantCost)
-                    {
-                        TempData["Error"] = "Not enough money for Assistant!";
-                        break;
-                    }
-
-                    if (assistantLevel >= 3)
-                    {
-                        TempData["Error"] = "Assistant is already maxed out!";
-                        break;
-                    }
+                    { TempData["Error"] = "Not enough $"; break; }
 
                     player.KebabBankAccount -= assistantCost;
-                    assistantLevel++;
-
-                    // Assistant stored after grill levels (offset trick)
-                    player.Checkout = 5 + assistantLevel;
-
-                    TempData["Message"] = $"👨‍🍳 Assistant hired (Level {assistantLevel})! You now earn passive income faster every few seconds!";
-                    break;
-
-                default:
-                    TempData["Error"] = "Invalid upgrade selected.";
+                    player.AssistantLevel++;
+                    TempData["Message"] = $"👨‍🍳 Assistant Level {player.AssistantLevel}!";
                     break;
             }
 
-            _context.Kebabs.Update(player);
             await _context.SaveChangesAsync();
-
             return RedirectToAction("Upgrades", "Marketplace");
         }
+
+
+
+        // ✅ PASSIVE INCOME — smart interval calculation
         [HttpPost]
         public async Task<IActionResult> CollectPassiveIncome()
         {
             var player = await _context.Kebabs.FirstOrDefaultAsync();
             if (player == null)
-                return Json(new { earned = 0, message = "Player not found", interval = 30 });
+                return Json(new { earned = 0, interval = 30 });
 
-            // 🎚 Grill level (0–5) — reduces time
-            int grillLevel = Math.Min(player.Checkout, 5);
+            if (player.AssistantLevel <= 0)
+                return Json(new { earned = 0, message = "No assistant yet!" });
 
-            // 👨‍🍳 Assistant level — stored as offset beyond grill (Checkout > 5)
-            int assistantLevel = player.Checkout > 5 ? player.Checkout - 5 : 0;
-
-            // 💎 Spices level — +10% income per level (every +1000 XPNextLevel)
-            int spiceLevel = Math.Min(player.KebabXPNextLevel / 1000, 5);
-
-            // ❌ No assistant = no passive income
-            if (assistantLevel <= 0)
-                return Json(new { earned = 0, message = "No assistant yet!", interval = 30 });
-
-            // 🕒 Base interval = 30s, reduced by 4s per grill level
             int baseTime = 30;
-            int interval = Math.Max(10, baseTime - (grillLevel * 4));
+            int interval = Math.Max(10, baseTime - (player.GrillLevel * 4));
 
-            // ⏱ Prevent early collection
             if (player.LastAssistantPayedAt != null)
             {
-                double secondsSinceLast = (DateTime.UtcNow - player.LastAssistantPayedAt.Value).TotalSeconds;
-                if (secondsSinceLast < interval)
+                var passed = (DateTime.UtcNow - player.LastAssistantPayedAt.Value).TotalSeconds;
+                if (passed < interval)
                 {
                     return Json(new
                     {
                         earned = 0,
-                        message = $"Too early! Wait {Math.Ceiling(interval - secondsSinceLast)}s",
+                        message = $"Wait {(int)(interval - passed)}s",
                         interval
                     });
                 }
             }
 
-            // 💰 Base income grows with assistant level
-            decimal baseIncome = assistantLevel * 50;
+            decimal income = (50 * player.AssistantLevel) * (1 + player.SpiceLevel * 0.10m);
+            int earned = (int)income;
 
-            // 💎 Apply spices bonus (+10% per level)
-            decimal finalIncome = baseIncome * (1 + (spiceLevel * 0.10m));
-
-            // 💸 Update player data
-            player.KebabBankAccount += (int)Math.Round(finalIncome);
+            player.KebabBankAccount += earned;
             player.LastAssistantPayedAt = DateTime.UtcNow;
 
-            _context.Kebabs.Update(player);
             await _context.SaveChangesAsync();
 
-            // ✅ Return result as JSON
-            return Json(new
-            {
-                earned = (int)Math.Round(finalIncome),
-                interval,
-                message = $"👨‍🍳 Assistant earned ${(int)Math.Round(finalIncome)} (Lvl {assistantLevel}, {interval}s interval, +{spiceLevel * 10}% bonus)"
-            });
+            return Json(new { earned, interval });
+
         }
     }
-}
+    }

@@ -71,51 +71,42 @@ namespace Kebab_Simulator.Controllers
 
             int playerMoney = player.KebabBankAccount;
 
-            // 🔥 Grill upgrade level — stored in Checkout (0–5)
-            int grillLevel = Math.Min(player.Checkout, 5);
+            // ✅ Uued levelid mudelist
+            int grillLevel = player.GrillLevel;
+            int spiceLevel = player.SpiceLevel;
+            int assistantLevel = player.AssistantLevel;
 
-            // 💎 Spices upgrade level — stored in KebabXPNextLevel as placeholder (every 1000 = 1 level)
-            int spiceLevel = player.KebabXPNextLevel / 1000;
-            if (spiceLevel > 5)
-                spiceLevel = 5;
-
-            // 👨‍🍳 Assistant upgrade level — stored in Checkout beyond +5 (offset trick)
-            int assistantLevel = player.Checkout > 5 ? player.Checkout - 5 : 0;
-            if (assistantLevel > 3)
-                assistantLevel = 3;
-
-            // 🧱 Define all upgrades properly
             var upgrades = new List<UpgradeViewModel>
-            {
-                new UpgradeViewModel
-                {
-                    Name = "🔥 Faster Grill",
-                    Description = "Reduces kebab cook time and assistant income interval by 4 sec per level.",
-                    CurrentLevel = grillLevel,
-                    MaxLevel = 5,
-                    UpgradeCost = 200 + (grillLevel * 100)
-                },
-                new UpgradeViewModel
-                {
-                    Name = "💎 Special Spices",
-                    Description = "Increases ALL income (sales + passive) by +10% per level.",
-                    CurrentLevel = spiceLevel,
-                    MaxLevel = 5,
-                    UpgradeCost = 300 + (spiceLevel * 150)
-                },
-                new UpgradeViewModel
-                {
-                    Name = "👨‍🍳 Assistant",
-                    Description = "Adds passive income every few seconds. Scales with grill & spice levels.",
-                    CurrentLevel = assistantLevel,
-                    MaxLevel = 3,
-                    UpgradeCost = 500 + (assistantLevel * 200)
-                }
-            };
+    {
+        new UpgradeViewModel
+        {
+            Name = "🔥 Faster Grill",
+            Description = "Reduces cooking time by 4 sec per level.",
+            CurrentLevel = grillLevel,
+            MaxLevel = 5,
+            UpgradeCost = 200 + (grillLevel * 100)
+        },
+        new UpgradeViewModel
+        {
+            Name = "💎 Special Spices",
+            Description = "Increases ALL income by +10% per level.",
+            CurrentLevel = spiceLevel,
+            MaxLevel = 5,
+            UpgradeCost = 300 + (spiceLevel * 150)
+        },
+        new UpgradeViewModel
+        {
+            Name = "👨‍🍳 Assistant",
+            Description = "Passive income, increases every level.",
+            CurrentLevel = assistantLevel,
+            MaxLevel = 3,
+            UpgradeCost = 500 + (assistantLevel * 200)
+        }
+    };
 
             ViewBag.PlayerMoney = playerMoney;
-
             return View(upgrades);
         }
+
     }
 }

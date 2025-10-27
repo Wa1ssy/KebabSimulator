@@ -18,6 +18,10 @@ namespace Kebab_Simulator.Core.Domain
         public DateTime? LastAssistantPayedAt { get; set; }
         public int Reputation { get; set; }
         public int CookSpeed { get; set; }
+        public int GrillLevel { get; set; }     // 0–5
+        public int SpiceLevel { get; set; }     // 0–5
+        public int AssistantLevel { get; set; } // 0–3
+
         public int PassiveIncomeLevel { get; set; } 
         public IEnumerable<FileToDatabaseDto> Image { get; set; } = new List<FileToDatabaseDto>();
         public int KebabBankAccount { get; set; }

@@ -17,7 +17,7 @@ builder.Services.AddScoped<IEmailsServices, EmailsServices>();
 builder.Services.AddScoped<IAccountsServices, AccountsServices>();
 builder.Services.AddScoped<IPlayerProfilesServices, PlayerProfilesServices>();
 builder.Services.AddScoped<ICountriesServices, CountriesServices>();
-builder.Services.AddScoped<IPlayerGameService, PlayerGameService>();
+//builder.Services.AddScoped<IPlayerGameService, PlayerGameService>();
 
 
 builder.Services.AddDbContext<KebabSimulatorContext>(
