@@ -1,57 +1,67 @@
 ﻿@model IEnumerable<Kebab_Simulator.Models.KebabModels.KebabIndexViewModel>
 
-<div class="kebab-header">
+<div class="kebab-header text-center mb-4">
     <h1>Kebab Simulator</h1>
     <p>Manage Your Kebab Empire</p>
 </div>
 
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success text-center fade show" role="alert" id="successMessage">
+        @TempData["Message"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger text-center fade show" role="alert">
+        @TempData["Error"]
+    </div>
+}
+
 <div class="container">
     <div class="d-flex justify-content-between mb-4">
-        <a asp-action="Add" asp-controller="Kebab" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Make Kebab
-        </a>
-        <a asp-action="Create" asp-controller="Kebab" class="btn btn-secondary">
-            <i class="fas fa-user-plus"></i> New Character
-        </a>
+        <div>
+            <a asp-action="Index" asp-controller="Marketplace" class="btn btn-success me-2">
+                <i class="fas fa-store"></i> Marketplace
+            </a>
+
+            <a asp-action="Upgrades" asp-controller="Marketplace" class="btn btn-warning">
+                <i class="fas fa-tools"></i> Upgrades
+            </a>
+        </div>
     </div>
 
     <div class="kebab-card">
         <table class="table table-hover">
             <thead class="thead-dark">
                 <tr>
-                    <th style="text-align: center;">#</th>
-                    <th style="text-align: center;">Name</th>
-                    <th style="text-align: center;">Level</th>
-                    <th style="text-align: center;">Bank</th>
-                    <th style="text-align: center;">Actions</th>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Level</th>
+                    <th class="text-center">Bank</th>
                 </tr>
             </thead>
             <tbody>
-                @{
-                    int rowNumber = 1;
-                }
                 @foreach (var Kebab in Model)
                 {
                     <tr>
-                        <td style="text-align: center;">@rowNumber</td>
-                        <td style="text-align: center;">@Kebab.KebabName</td>
-                        <td style="text-align: center;">@Kebab.KebabLevel</td>
-                        <td style="text-align: center;">@Kebab.KebabBankAccount €</td>
-                        <td style="text-align: center;">
-                            <a asp-action="Details" asp-route-id="@Kebab.ID" class="btn btn-sm btn-info">
-                                <i class="fas fa-info-circle"></i>
-                            </a>
-                            <a asp-action="Update" asp-route-id="@Kebab.ID" class="btn btn-sm btn-warning">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <a asp-action="Delete" asp-route-id="@Kebab.ID" class="btn btn-sm btn-danger">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                        </td>
+                        <td class="text-center">@Kebab.KebabName</td>
+                        <td class="text-center">@Kebab.KebabLevel</td>
+                        <td class="text-center" id="bank-@Kebab.ID">@Kebab.KebabBankAccount €</td>
                     </tr>
-                    rowNumber++;
                 }
             </tbody>
         </table>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        const msg = document.getElementById('successMessage');
+        if (msg) {
+            setTimeout(() => {
+                msg.classList.remove('show');
+                msg.classList.add('fade');
+            }, 3000);
+        }
+    </script>
+}

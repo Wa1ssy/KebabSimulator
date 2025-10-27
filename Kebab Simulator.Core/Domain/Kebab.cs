@@ -4,39 +4,7 @@ using System.Collections.Generic;
 
 namespace Kebab_Simulator.Core.Domain
 {
-    public enum KebabType
-    {
-        ErzanLegacy,
-        AslansAmbition,
-        SteppeFlame,
-        NomadsFeast,
-        GoldenYurt,
-        SilkRoadSkewer,
-        FathersPride,
-        EaglesBite,
-        KazakhSun,
-        AslansRoar,
-        SteppeWhisper,
-        TravelersDelight,
-        MountainSmoke,
-        GoldenHorde,
-        MidnightCaravan,
-        EternalFlame,
-        AslansTriumph,
-        SteppeBreeze,
-        LegendsSkewer,
-        HeartOfTheStand
-    }
 
-
-    public enum KebabStatus
-    {
-        Raw,
-        Cooking,
-        Cooked,
-        ReadyToServe,
-        Sold
-    }
 
     public class Kebab
     {
@@ -45,10 +13,12 @@ namespace Kebab_Simulator.Core.Domain
         public int KebabXP { get; set; }
         public int KebabXPNextLevel { get; set; }
         public int KebabLevel { get; set; }
-        public KebabType KebabType { get; set; }
         public int Checkout { get; set; }
-        public string Description { get; set; }
-        public string Ingredients { get; set; }
+        public int Ingredients { get; set; }
+        public DateTime? LastAssistantPayedAt { get; set; }
+        public int Reputation { get; set; }
+        public int CookSpeed { get; set; }
+        public int PassiveIncomeLevel { get; set; } 
         public IEnumerable<FileToDatabaseDto> Image { get; set; } = new List<FileToDatabaseDto>();
         public int KebabBankAccount { get; set; }
         public DateTime KebabStart { get; set; }
@@ -56,5 +26,6 @@ namespace Kebab_Simulator.Core.Domain
         public KebabStatus KebabStatus { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public KebabType KebabType { get; set; }
     }
 }

@@ -48,8 +48,6 @@ namespace Kebab_Simulator.Core.Domain.Dto
         public int KebabLevel { get; set; }
         public KebabType KebabType { get; set; }
         public int Checkout { get; set; }
-        public string Description { get; set; }
-        public string Ingredients { get; set; }
         public int KebabBankAccount { get; set; }
         public DateTime KebabStart { get; set; }
         public DateTime KebabDone { get; set; }

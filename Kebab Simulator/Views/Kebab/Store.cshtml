@@ -1,0 +1,44 @@
+﻿@model Kebab_Simulator.Models.ViewModels.KebabViewModel
+@{
+    ViewData["Title"] = "Cooking " + Model.Name;
+    int cookTime = ViewBag.CookTime;
+    int grillLevel = ViewBag.GrillLevel;
+}
+
+<div class="container mt-5 text-center">
+    <h2 class="mb-3">🍢 Cooking: <span class="text-primary">@Model.Name</span></h2>
+    <p class="text-muted">@Model.Description</p>
+    <p><strong>Ingredients:</strong> @Model.Ingredients</p>
+    <p><strong>🔥 Grill Level:</strong> @grillLevel</p>
+    <p><strong>Cooking time:</strong> @cookTime seconds</p>
+
+    <div id="timer" class="display-6 my-4">@cookTime</div>
+
+    <form asp-controller="Kebab" asp-action="Sell" method="post">
+        <input type="hidden" name="recipeId" value="@Model.ID" />
+        <button id="sellBtn" type="submit" class="btn btn-success btn-lg" disabled>
+            Sell for $@Model.Price
+        </button>
+    </form>
+
+    <a asp-controller="Marketplace" asp-action="Index" class="btn btn-secondary mt-3">Back to Marketplace</a>
+</div>
+
+@section Scripts {
+    <script>
+        let seconds = @cookTime;
+        const timerDisplay = document.getElementById("timer");
+        const sellBtn = document.getElementById("sellBtn");
+
+        const countdown = setInterval(() => {
+            seconds--;
+            timerDisplay.textContent = seconds;
+
+            if (seconds <= 0) {
+                clearInterval(countdown);
+                timerDisplay.textContent = "✅ Kebab is ready!";
+                sellBtn.disabled = false;
+            }
+        }, 1000);
+    </script>
+}

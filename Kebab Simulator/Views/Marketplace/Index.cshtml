@@ -1,0 +1,44 @@
+﻿@model Kebab_Simulator.Models.ViewModels.MarketplaceViewModel
+@{
+    ViewData["Title"] = "Marketplace";
+    int playerLevel = ViewBag.PlayerLevel;
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">🥙 Kebab Marketplace</h1>
+    <h5 class="text-center text-muted mb-5">Your Level: @playerLevel</h5>
+
+    <div class="row">
+        @foreach (var kebab in Model.AvailableRecipes)
+        {
+            bool isUnlocked = kebab.LevelRequired <= playerLevel;
+
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border-0 @(isUnlocked ? "" : "opacity-50")">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">@kebab.Name</h5>
+                        <p class="text-muted">@kebab.Description</p>
+                        <p><strong>Level Required:</strong> @kebab.LevelRequired</p>
+                        <p><strong>Price:</strong> $@kebab.Price</p>
+
+                        @if (isUnlocked)
+                        {
+                            <form asp-controller="Kebab" asp-action="Store" method="get">
+                                <input type="hidden" name="recipeId" value="@kebab.ID" />
+                                <button type="submit" class="btn btn-success w-100">
+                                    Cook this Kebab 🍢
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <button class="btn btn-secondary w-100" disabled>
+                                Locked 🔒
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -7,7 +7,6 @@
         public int CurrentLevel { get; set; }
         public int MaxLevel { get; set; }
         public decimal UpgradeCost { get; set; }
-
         public bool IsMaxedOut => CurrentLevel >= MaxLevel;
     }
 }

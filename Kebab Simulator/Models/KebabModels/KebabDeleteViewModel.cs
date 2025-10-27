@@ -11,8 +11,6 @@
         public int KebabBankAccount { get; set; }
         public DateTime KebabStart { get; set; }
         public DateTime KebabDone { get; set; }
-        public KebabType KebabType { get; set; }
-        public KebabStatus KebabStatus { get; set; }
         public List<IFormFile> Files { get; set; }
         public List<KebabImageViewModel> Image { get; set; } = new List<KebabImageViewModel>();
         public DateTime CreatedAt { get; set; }

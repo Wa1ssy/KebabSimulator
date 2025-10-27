@@ -1,28 +1,7 @@
-﻿namespace Kebab_Simulator.Models.ViewModels
+﻿using System;
+
+namespace Kebab_Simulator.Core.Domain
 {
-    public enum KebabType
-    {
-        ErzanLegacy,
-        AslansAmbition,
-        SteppeFlame,
-        NomadsFeast,
-        GoldenYurt,
-        SilkRoadSkewer,
-        FathersPride,
-        EaglesBite,
-        KazakhSun,
-        AslansRoar,
-        SteppeWhisper,
-        TravelersDelight,
-        MountainSmoke,
-        GoldenHorde,
-        MidnightCaravan,
-        EternalFlame,
-        AslansTriumph,
-        SteppeBreeze,
-        LegendsSkewer,
-        HeartOfTheStand
-    }
 
     public enum KebabStatus
     {
@@ -32,7 +11,7 @@
         ReadyToServe,
         Sold
     }
-    public class KebabViewModel
+    public class KebabRecipe
     {
         public Guid ID { get; set; }
         public string Name { get; set; }

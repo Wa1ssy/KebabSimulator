@@ -19,7 +19,6 @@ namespace Kebab_Simulator.Core.Domain
 		public DateTime KebabStart { get; set; } 
 		public DateTime KebabDone { get; set; }
 		public KebabStatus KebabStatus { get; set; }
-
 		public DateTime OwnershipCreatedAt { get; set; }
 		public DateTime OwnershipUpdatedAt { get; set; }
 

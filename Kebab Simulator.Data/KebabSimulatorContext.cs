@@ -11,7 +11,8 @@ namespace Kebab_Simulator.Data
 		public KebabSimulatorContext(DbContextOptions<KebabSimulatorContext> options) : base(options) { }
 
 		public DbSet<FileToDatabase> FilesToDatabase { get; set; }
-		public DbSet<Kebab> Kebabs { get; set; }
+		public DbSet<KebabRecipe> KebabRecipes { get; set; }
+        public DbSet<Kebab> Kebabs { get; set; }
 		public DbSet<IdentityRole> IdentityRoles { get; set; }
 		public DbSet<Country> Countries { get; set; }
 		public DbSet<PlayerProfile> PlayerProfiles { get; set; }

@@ -6,11 +6,56 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Kebab_Simulator</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Kebab_Simulator.styles.css" asp-append-version="true" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .assistant-income {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ffc107;
+            color: #222;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            animation: fadeUp 2s ease-out;
+            z-index: 9999;
+        }
+
+        @@keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            20% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+
+
+        #bank-display {
+            font-weight: 600;
+            color: #28a745;
+            margin-left: 15px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -21,6 +66,7 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         @if (signInManager.IsSignedIn(User))
@@ -32,17 +78,20 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Kebab" asp-action="Index">Kebab</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="KebabBodies" asp-action="Index">Countries</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Marketplace" asp-action="Index">Marketplace</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Marketplace" asp-action="Upgrades">Upgrades</a>
                             </li>
                         }
                     </ul>
-                    @* user login section on the navbar*@
+
                     <ul class="navbar-nav ml-auto">
                         @if (signInManager.IsSignedIn(User))
                         {
-                            <li class="nav-item">
+                            <li class="nav-item ms-3">
                                 <form method="post" asp-controller="Accounts" asp-action="Logout">
-                                    <button type="submit" class="nav-link btn btn-link py-0  text-white" style="width:auto; padding-top: 0.8rem;">
+                                    <button type="submit" class="nav-link btn btn-link py-0 text-dark" style="width:auto;">
                                         Logout @User.Identity.Name
                                     </button>
                                 </form>
@@ -51,10 +100,10 @@
                         else
                         {
                             <li>
-                                <a class="nav-link text-white" asp-controller="Accounts" asp-action="Register">Register</a>
+                                <a class="nav-link text-dark" asp-controller="Accounts" asp-action="Register">Register</a>
                             </li>
                             <li>
-                                <a class="nav-link text-white" asp-controller="Accounts" asp-action="Login">Login</a>
+                                <a class="nav-link text-dark" asp-controller="Accounts" asp-action="Login">Login</a>
                             </li>
                         }
                     </ul>
@@ -62,10 +111,7 @@
             </div>
         </nav>
     </header>
-    </div>
-    </div>
-    </nav>
-    </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -76,5 +122,50 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    @if (signInManager.IsSignedIn(User))
+    {
+        <script>
+            let playerMoney = 0;
+
+            // 🧠 Fetch current money from backend
+            async function fetchPlayerMoney() {
+                try {
+                    const res = await fetch('/Kebab/GetBankBalance');
+                    const data = await res.json();
+                    playerMoney = data.bank;
+                    document.getElementById('bank-amount').textContent = playerMoney;
+                } catch (e) {
+                    console.error("Error fetching balance", e);
+                }
+            }
+
+            // 👨‍🍳 Passive income loop
+            async function startAssistantIncome() {
+                while (true) {
+                    const res = await fetch('/Kebab/CollectPassiveIncome', { method: 'POST' });
+                    const data = await res.json();
+
+                    if (data.earned > 0) {
+                        playerMoney += data.earned;
+                        document.getElementById('bank-amount').textContent = playerMoney;
+
+                        const msg = document.createElement('div');
+                        msg.textContent = `+ $${data.earned} (Assistant)`;
+                        msg.className = "assistant-income";
+                        document.body.appendChild(msg);
+                        setTimeout(() => msg.remove(), 2000);
+                    }
+
+                    await new Promise(r => setTimeout(r, (data.interval || 30) * 1000));
+                }
+            }
+
+            document.addEventListener("DOMContentLoaded", async () => {
+                await fetchPlayerMoney();
+                startAssistantIncome();
+            });
+        </script>
+    }
 </body>
 </html>
