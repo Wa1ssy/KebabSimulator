@@ -336,7 +336,7 @@ namespace Kebab_Simulator.Controllers
 
             TempData["Message"] =
                 $"You sold {recipe.Name} for ${finalPrice}! (+{player.SpiceLevel * 10}% bonus)";
-            return RedirectToAction("Index", "Marketplace");
+            return RedirectToAction("Index", "Kebab");
         }
 
 
