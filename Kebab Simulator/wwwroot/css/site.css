@@ -1,274 +1,207 @@
 ﻿/* ========================
+   IMPORT FONTS
+======================== */
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&family=Poppins:wght@300;400;600&display=swap');
+
+/* ========================
    VARIABLES
 ======================== */
 :root {
-    --mint-light: #ffffff;
-    --fuchsia: #9E2B25;
-    --plum-dark: #FF9B71;
-    --wine: #9E2B25;
-    --coal: #121212;
-    --brand-gradient: linear-gradient(45deg, var(--fuchsia), var(--plum-dark));
-    --transition: all 0.3s ease;
+    --bg: #111;
+    --panel: rgba(255,255,255,0.08);
+    --text: #000;
+    --accent: #ff5f46;
+    --accent-glow: 0 0 15px rgba(255,95,70,0.9);
+    --radius: 18px;
+    --transition: .35s ease;
 }
 
 /* ========================
-   GLOBAL STYLES
+   BODY & GLOBAL
 ======================== */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
 body {
-    background: var(--mint-light);
-    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at center, #ff5f46, #000);
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    color: var(--coal);
-    transition: var(--transition);
+    font-family: "Poppins", sans-serif;
+    color: var(--text);
+    overflow-x: hidden;
 }
 
-a {
-    text-decoration: none;
+    /* Smoke overlay */
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('/images/kebab_PNG4.png');
+        opacity: 0.25;
+        animation: smoke 18s infinite linear;
+        z-index: -1;
+    }
+
+@keyframes smoke {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 2000px 2000px;
+    }
 }
 
+/* ========================
+   FLOW FIELD CANVAS
+======================== */
+#backgroundCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2; /* behind everything */
+}
+
+/* ========================
+   NAVBAR
+======================== */
 .navbar {
-    background: var(--brand-gradient) !important;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    background: radial-gradient(circle at center, #ff5f46, #000)!important;
+    backdrop-filter: blur(12px);
+    box-shadow: var(--accent-glow);
+    opacity: 0.9;
 }
 
 .navbar-brand {
-    font-weight: 700;
-    letter-spacing: 2px;
-    font-size: x-large;
-    color: var(--mint-light) !important;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.25);
+    font-family: "Russo One";
+    font-size: 2rem;
+    color: rgba(255,255,255,0.08);
+    text-shadow: var(--accent-glow);
 }
 
 .nav-link {
-    position: relative;
-    margin: 0 15px;
-    font-size: large;
-    color: var(--mint-light) !important;
+    color: #eee !important;
     transition: var(--transition);
 }
 
-    .nav-link::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: var(--mint-light);
-        transition: width 0.3s ease;
-    }
-
-    .nav-link:hover::after {
-        width: 100%;
+    .nav-link:hover {
+        color: var(--accent) !important;
     }
 
 /* ========================
-   SIDE IMAGES
+   HEADER (HERO)
 ======================== */
-.container-with-sides {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    position: relative;
-}
-
-.main-container {
-    flex: 1;
-    max-width: 900px;
-    padding: 20px;
+.kebab-header {
+    background: url('/images/background.jpg') center/cover no-repeat;
+    padding: 6rem 2rem;
+    box-shadow: inset 0 0 60px rgba(0,0,0,0.6);
+    font-family: "Russo One";
+    color: var(--text);
+    letter-spacing: 2px;
     text-align: center;
 }
 
-.side-image {
-    position: fixed;
-    bottom: 120px;
-    width: 400px;
-    z-index: 100;
+/* ========================
+   GLASS CARDS
+======================== */
+.kebab-card, .big-card {
+    background: var(--panel);
+    backdrop-filter: blur(14px);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    transition: var(--transition);
 }
 
-    .side-image.left {
-        left: 20px;
+    .kebab-card:hover, .big-card:hover {
+        transform: translateY(-6px) scale(1.02);
     }
 
-    .side-image.right {
-        right: 20px;
+/* ========================
+   BUTTONS
+======================== */
+.btn-primary, .big-btn {
+    background: var(--accent);
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 60px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+    box-shadow: var(--accent-glow);
+}
+
+    .btn-primary:hover, .big-btn:hover {
+        transform: scale(1.1) rotate(-1deg);
     }
 
-    .side-image img {
-        max-width: 100%;
-        height: auto;
+    .btn-primary::after, .big-btn::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -150%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+        transition: 0.6s;
+    }
+
+    .btn-primary:hover::after, .big-btn:hover::after {
+        left: 150%;
     }
 
 /* ========================
    FOOTER
 ======================== */
 .footer {
-    background: var(--wine);
-    color: rgba(255,255,255,0.85);
-    margin-top: auto;
-    padding: 2rem 0;
+    background: #000;
+    color: #bbb;
+    padding: 2rem;
     text-align: center;
 }
 
 /* ========================
-   COMPONENTS
+   FLOATING KEBABS
 ======================== */
-.kebab-header {
-    background: linear-gradient(45deg, var(--fuchsia), var(--plum-dark), var(--fuchsia));
-    background-size: 400% 400%;
-    color: var(--mint-light);
-    padding: 4rem 2rem;
-    margin-bottom: 2rem;
-    text-align: center;
-    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
-    animation: gradientMove 7s ease infinite;
+.floating-kebab {
+    position: fixed;
+    width: 120px;
+    pointer-events: none;
+    animation: floatKebab 6s ease-in-out infinite;
+    z-index: -1;
 }
 
-@keyframes gradientMove {
-    0% {
-        background-position: 0% 0%;
+@keyframes floatKebab {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
     }
 
     50% {
-        background-position: 100% 100%;
-    }
-
-    100% {
-        background-position: 0% 0%;
+        transform: translateY(-30px) rotate(10deg);
     }
 }
-
-.kebab-card {
-    background: var(--mint-light);
-    color: var(--coal);
-    border-radius: 20px;
-    padding: 2rem;
-    margin: 1rem 0;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: none;
-}
-
-    .kebab-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 36px rgba(158, 43, 37, 0.25);
-    }
 
 /* ========================
-   BUTTONS
+   RESPONSIVE
 ======================== */
-.btn-primary {
-    background: var(--brand-gradient);
-    border: none;
-    padding: 0.8rem 2rem;
-    border-radius: 50px;
-    position: relative;
-    overflow: hidden;
-    transition: var(--transition);
-    color: var(--mint-light);
-}
-
-    .btn-primary::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
-        transition: all 0.6s ease;
-    }
-
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(230,57,155,0.3);
-    }
-
-        .btn-primary:hover::after {
-            left: 100%;
-        }
-
-/* ========================
-   TABLES & FORMS
-======================== */
-.table, .kebab-table {
-    width: 90%;
-    margin: 2rem auto;
-    border-collapse: separate;
-    border-spacing: 0 0.75rem;
-}
-
-    .table thead, .kebab-table thead {
-        background: var(--spice-gradient);
-        color: black;
-    }
-
-        .table thead th, .kebab-table thead th {
-            padding: 1rem 1.5rem;
-            border: none;
-            font-size: 1.1rem;
-        }
-
-    .table tbody tr, .kebab-table tbody tr {
-        background: var(--onion-white);
-        transition: background 0.3s ease, transform 0.2s ease;
-        cursor: pointer;
-    }
-
-        .table tbody tr:hover, .kebab-table tbody tr:hover {
-            background: var(--cream);
-            transform: scale(1.02);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-
-/* Vormid ja sisendid */
-.form-control {
-    border-radius: 50px;
-    padding: 0.8rem 1.5rem;
-    border: 2px solid #ddd;
-    background: white;
-    transition: border-color 0.3s ease, box-shadow 0.2s ease;
-}
-
-    .form-control:focus {
-        border-color: var(--flame-red);
-        box-shadow: 0 0 0 4px rgba(255,61,0,0.3);
-        outline: none;
-    }
-
-/* Footer */
-.footer {
-    background: var(--meat-brown);
-    color: #FFFDE7;
-    padding: 2rem 0;
-    text-align: center;
-    margin-top: auto;
-    font-size: 0.9rem;
-}
-
-/* Mobile responsive parandus */
 @media (max-width: 768px) {
-    .navbar {
-        font-size: 1.25rem;
-        padding: 0.75rem 1rem;
-    }
-
-    .table, .kebab-table {
-        width: 100%;
-        margin: 1rem 0;
+    .navbar-brand {
+        font-size: 1.5rem;
     }
 
     .kebab-header {
-        padding: 2rem 1rem;
+        padding: 4rem 1rem;
     }
+
+    .floating-kebab {
+        width: 80px;
+    }
+
+
 }
 
 /* ========================
@@ -301,3 +234,11 @@ a {
         transform: scale(1.05);
         box-shadow: 0 8px 20px rgba(158, 43, 37, 0.3);
     }
+
+    .btn-primary:hover, .big-btn:hover {
+        background: #ff7f61;
+        transform: scale(1.1) rotate(-1deg);
+        box-shadow: 0 0 20px rgba(255,127,97,0.8);
+    }
+
+
