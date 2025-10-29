@@ -195,40 +195,48 @@ namespace Kebab_Simulator.Controllers
                     Email = model.Email,
                     City = model.City,
                 };
+
                 var result = await _userManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
-                    // 👉 Uuele kasutajale lisatakse Player roll
                     await _userManager.AddToRoleAsync(user, "Player");
 
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                    var confirmationLink = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, token = token }, Request.Scheme);
+                    var confirmationLink = Url.Action(
+                        "ConfirmEmail",
+                        "Accounts",
+                        new { userId = user.Id, token = token },
+                        Request.Scheme
+                    );
 
-                    EmailTokenDto newsignup = new();
-                    newsignup.Token = token;
-                    newsignup.Body = $"Thank you for signing up, click here: {confirmationLink}";
-                    newsignup.Subject = "Register";
-                    newsignup.To = user.Email;
-
+                    EmailTokenDto newsignup = new()
+                    {
+                        Token = token,
+                        Body = $"Thank you for signing up! Please confirm your email by clicking here: {confirmationLink}",
+                        Subject = "Confirm your email",
+                        To = user.Email
+                    };
                     _emailServices.SendEmailToken(newsignup, token);
+
                     if (_SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                     {
                         return RedirectToAction("ListUsers", "Administrations");
                     }
 
-                    ViewBag.ErrorTitle = "You have successfully registered";
-                    ViewBag.ErrorMessage = "Before you can log in, please confirm email from the link" +
-                        "\nwe have emailed to your email address.";
-                    return View("~/Views/Shared/Error.cshtml", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                    return View("VerifyEmail");
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
             }
-            return View();
+
+            return View(model);
         }
+
 
         [HttpGet]
         [AllowAnonymous]
