@@ -1,244 +1,448 @@
 ﻿/* ========================
-   IMPORT FONTS
-======================== */
-@import url('https://fonts.googleapis.com/css2?family=Russo+One&family=Poppins:wght@300;400;600&display=swap');
-
-/* ========================
-   VARIABLES
+   VARIABLES – ERZHANN LEGACY THEME
 ======================== */
 :root {
-    --bg: #111;
-    --panel: rgba(255,255,255,0.08);
-    --text: #000;
-    --accent: #ff5f46;
-    --accent-glow: 0 0 15px rgba(255,95,70,0.9);
-    --radius: 18px;
-    --transition: .35s ease;
+    --neon-turquoise: #00e7c2; /* õrn türkiisne neoon */
+    --ember-orange: #ff7a00; /* kebabi tuli / süsi */
+    --spice-brown: #5a2c0b; /* soe pruun taust */
+    --charcoal-dark: #0d1411; /* sügav tume roheline must */
+    --mint-light: #eafdf9; /* hele kontrast tekstidele */
+    --sand-gold: #f5c76a; /* kuldoranž aktsent */
+    --coal: #121212; /* must tekst / fallback */
+    --smoke-gray: #1f2623; /* sekundaartaust */
+    --brand-gradient: linear-gradient(135deg, var(--ember-orange), var(--sand-gold), var(--neon-turquoise));
+    --transition: all 0.3s ease;
 }
 
 /* ========================
-   BODY & GLOBAL
+   GLOBAL STYLES
 ======================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    background: radial-gradient(circle at center, #ff5f46, #000);
+    background: var(--charcoal-dark);
+    font-family: 'Poppins', sans-serif;
     min-height: 100vh;
-    font-family: "Poppins", sans-serif;
-    color: var(--text);
-    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    color: var(--mint-light);
+    transition: var(--transition);
 }
 
-    /* Smoke overlay */
-    body::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: url('/images/kebab_PNG4.png');
-        opacity: 0.25;
-        animation: smoke 18s infinite linear;
-        z-index: -1;
-    }
-
-@keyframes smoke {
-    0% {
-        background-position: 0 0;
-    }
-
-    100% {
-        background-position: 2000px 2000px;
-    }
-}
-
-/* ========================
-   FLOW FIELD CANVAS
-======================== */
-#backgroundCanvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2; /* behind everything */
+a {
+    text-decoration: none;
 }
 
 /* ========================
    NAVBAR
 ======================== */
 .navbar {
-    background: radial-gradient(circle at center, #ff5f46, #000)!important;
-    backdrop-filter: blur(12px);
-    box-shadow: var(--accent-glow);
-    opacity: 0.9;
+    background: var(--brand-gradient) !important;
+    box-shadow: 0 4px 20px rgba(0, 231, 194, 0.25);
 }
 
 .navbar-brand {
-    font-family: "Russo One";
-    font-size: 2rem;
-    color: rgba(255,255,255,0.08);
-    text-shadow: var(--accent-glow);
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: x-large;
+    color: var(--mint-light) !important;
+    text-shadow: 0 0 12px rgba(0, 231, 194, 0.5);
 }
 
 .nav-link {
-    color: #eee !important;
+    position: relative;
+    margin: 0 15px;
+    font-size: large;
+    color: var(--mint-light) !important;
     transition: var(--transition);
 }
 
-    .nav-link:hover {
-        color: var(--accent) !important;
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--neon-turquoise);
+        transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
     }
 
 /* ========================
-   HEADER (HERO)
+   SIDE IMAGES
 ======================== */
-.kebab-header {
-    background: url('/images/background.jpg') center/cover no-repeat;
-    padding: 6rem 2rem;
-    box-shadow: inset 0 0 60px rgba(0,0,0,0.6);
-    font-family: "Russo One";
-    color: var(--text);
-    letter-spacing: 2px;
+.container-with-sides {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+}
+
+.main-container {
+    flex: 1;
+    max-width: 900px;
+    padding: 20px;
     text-align: center;
 }
 
-/* ========================
-   GLASS CARDS
-======================== */
-.kebab-card, .big-card {
-    background: var(--panel);
-    backdrop-filter: blur(14px);
-    border-radius: var(--radius);
-    padding: 2rem;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-    transition: var(--transition);
+.side-image {
+    position: fixed;
+    bottom: 120px;
+    width: 400px;
+    z-index: 100;
 }
 
-    .kebab-card:hover, .big-card:hover {
-        transform: translateY(-6px) scale(1.02);
+    .side-image.left {
+        left: 20px;
+    }
+
+    .side-image.right {
+        right: 20px;
+    }
+
+    .side-image img {
+        max-width: 100%;
+        height: auto;
+    }
+
+/* ========================
+   HEADER / HERO
+======================== */
+.kebab-header {
+    background: linear-gradient(45deg, var(--ember-orange), var(--sand-gold), var(--neon-turquoise));
+    background-size: 300% 300%;
+    color: var(--charcoal-dark);
+    padding: 4rem 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+    animation: gradientMove 8s ease infinite;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.4);
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    50% {
+        background-position: 100% 100%;
+    }
+
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
+/* ========================
+   CARDS
+======================== */
+.kebab-card {
+    background: var(--smoke-gray);
+    color: var(--mint-light);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 1rem 0;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    border: 1px solid rgba(0, 231, 194, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+    .kebab-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 25px rgba(255, 122, 0, 0.3);
     }
 
 /* ========================
    BUTTONS
 ======================== */
-.btn-primary, .big-btn {
-    background: var(--accent);
+.btn-primary {
+    background: var(--brand-gradient);
     border: none;
-    padding: 1rem 2.5rem;
-    border-radius: 60px;
-    font-weight: 600;
-    font-size: 1.2rem;
-    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
     position: relative;
     overflow: hidden;
     transition: var(--transition);
-    box-shadow: var(--accent-glow);
+    color: var(--charcoal-dark);
+    font-weight: 600;
+    box-shadow: 0 0 15px rgba(0, 231, 194, 0.3);
 }
 
-    .btn-primary:hover, .big-btn:hover {
-        transform: scale(1.1) rotate(-1deg);
-    }
-
-    .btn-primary::after, .big-btn::after {
-        content: "";
+    .btn-primary::after {
+        content: '';
         position: absolute;
         top: 0;
-        left: -150%;
+        left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
-        transition: 0.6s;
+        background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: all 0.6s ease;
     }
 
-    .btn-primary:hover::after, .big-btn:hover::after {
-        left: 150%;
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 25px rgba(255, 122, 0, 0.4);
+    }
+
+        .btn-primary:hover::after {
+            left: 100%;
+        }
+
+/* ========================
+   TABLES & FORMS
+======================== */
+.table, .kebab-table {
+    width: 90%;
+    margin: 2rem auto;
+    border-collapse: separate;
+    border-spacing: 0 0.75rem;
+    color: var(--mint-light);
+}
+
+    .table thead, .kebab-table thead {
+        background: linear-gradient(90deg, var(--spice-brown), var(--ember-orange));
+        color: var(--mint-light);
+    }
+
+        .table thead th, .kebab-table thead th {
+            padding: 1rem 1.5rem;
+            border: none;
+            font-size: 1.1rem;
+        }
+
+    .table tbody tr, .kebab-table tbody tr {
+        background: var(--smoke-gray);
+        transition: background 0.3s ease, transform 0.2s ease;
+        cursor: pointer;
+    }
+
+        .table tbody tr:hover, .kebab-table tbody tr:hover {
+            background: rgba(255, 122, 0, 0.15);
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+/* Vormid ja sisendid */
+.form-control {
+    border-radius: 50px;
+    padding: 0.8rem 1.5rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: var(--smoke-gray);
+    color: var(--mint-light);
+    transition: border-color 0.3s ease, box-shadow 0.2s ease;
+}
+
+    .form-control:focus {
+        border-color: var(--ember-orange);
+        box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.25);
+        outline: none;
     }
 
 /* ========================
    FOOTER
 ======================== */
 .footer {
-    background: #000;
-    color: #bbb;
-    padding: 2rem;
+    background: linear-gradient(180deg, var(--spice-brown), var(--charcoal-dark));
+    color: rgba(255,255,255,0.85);
+    padding: 2rem 0;
     text-align: center;
-}
-
-/* ========================
-   FLOATING KEBABS
-======================== */
-.floating-kebab {
-    position: fixed;
-    width: 120px;
-    pointer-events: none;
-    animation: floatKebab 6s ease-in-out infinite;
-    z-index: -1;
-}
-
-@keyframes floatKebab {
-    0%, 100% {
-        transform: translateY(0) rotate(0deg);
-    }
-
-    50% {
-        transform: translateY(-30px) rotate(10deg);
-    }
+    margin-top: auto;
+    font-size: 0.9rem;
+    text-shadow: 0 0 6px rgba(0, 231, 194, 0.25);
 }
 
 /* ========================
    RESPONSIVE
 ======================== */
 @media (max-width: 768px) {
-    .navbar-brand {
-        font-size: 1.5rem;
+    .navbar {
+        font-size: 1.25rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .table, .kebab-table {
+        width: 100%;
+        margin: 1rem 0;
     }
 
     .kebab-header {
-        padding: 4rem 1rem;
+        padding: 2rem 1rem;
     }
 
-    .floating-kebab {
-        width: 80px;
+    .hud-panel {
+        top: auto;
+        bottom: 1rem;
+        right: 1rem;
+        font-size: 0.9rem;
     }
 
+    table table-hover {
+        text-align: center !important;
+    }
 
+    thead-dark {
+        text-align: center !important;
+    }
 }
 
 /* ========================
-   HOME PAGE CENTER BUTTON
+   MARKETPLACE CARDS
 ======================== */
-.home-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: calc(100vh - 1000px); /* paneb kaardi keskele ekraanil */
+.card {
+    background: rgba(20, 26, 23, 0.9);
+    border: 1px solid rgba(0, 231, 194, 0.25);
+    border-radius: 18px;
+    color: var(--mint-light);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    backdrop-filter: blur(6px);
 }
 
-.big-card {
-    width: 200%;
-    max-width: 600px;
-    padding: 4rem 3rem;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    border-radius: 20px;
+    .card:hover {
+        transform: translateY(-6px);
+        border-color: var(--ember-orange);
+        box-shadow: 0 0 25px rgba(255, 122, 0, 0.25);
+    }
+
+/* Locked cards (opacity-50) */
+.opacity-50 {
+    opacity: 0.4;
+    filter: grayscale(40%);
 }
 
-.big-btn {
-    font-size: 2.3rem;
-    padding: 1.1rem 3rem;
-    border-radius: 100px;
+/* Card titles */
+.card-title {
+    color: var(--sand-gold);
+    text-shadow: 0 0 6px rgba(245, 199, 106, 0.4);
+}
+
+/* Card descriptions */
+.card .text-muted {
+    color: rgba(234, 253, 249, 0.7) !important;
+}
+
+/* Price and level info */
+.card p strong {
+    color: var(--neon-turquoise);
+}
+
+/* Buttons */
+.card .btn-success {
+    background: var(--brand-gradient);
+    border: none;
+    color: var(--charcoal-dark);
+    font-weight: 600;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 231, 194, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+    .card .btn-success:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0 20px rgba(255, 122, 0, 0.4);
+    }
+
+/* Locked button */
+.card .btn-secondary[disabled] {
+    background: rgba(90, 44, 11, 0.3);
+    color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* ========================
+   COOKING VIEW DESIGN
+======================== */
+.container h2 {
+    color: var(--sand-gold);
+    text-shadow: 0 0 8px rgba(245, 199, 106, 0.4);
+}
+
+.container p strong {
+    color: var(--neon-turquoise);
+}
+
+/* Timer display */
+#timer {
+    color: var(--neon-turquoise);
+    text-shadow: 0 0 15px rgba(0, 231, 194, 0.6);
+    font-weight: 600;
+}
+
+/* ========================
+   MINIGAME AREA — FIXED DARK MODE
+======================== */
+#minigame-area {
+    position: relative;
+    width: 420px;
+    height: 360px;
+    margin: 40px auto;
+    border: 2px solid rgba(0, 231, 194, 0.25);
+    border-radius: 15px;
+    /* 🌒 Tume suitsune taust */
+    background: radial-gradient(circle at 40% 40%, rgba(255, 122, 0, 0.2), rgba(13, 20, 17, 0.95));
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6), inset 0 0 35px rgba(255, 122, 0, 0.15);
+    backdrop-filter: blur(6px);
+    color: var(--mint-light);
     transition: all 0.3s ease;
 }
 
-    .big-btn:hover {
-        transform: scale(1.05);
-        box-shadow: 0 8px 20px rgba(158, 43, 37, 0.3);
+    #minigame-area p {
+        color: rgba(234, 253, 249, 0.9);
+        font-weight: 500;
     }
 
-    .btn-primary:hover, .big-btn:hover {
-        background: #ff7f61;
-        transform: scale(1.1) rotate(-1deg);
-        box-shadow: 0 0 20px rgba(255,127,97,0.8);
+/* ========================
+   GRILL BUTTON (fire vibe)
+======================== */
+#grillButton {
+    background: linear-gradient(145deg, #ff7a00, #ffb84d);
+    border: none;
+    font-size: 18px;
+    padding: 14px 28px;
+    border-radius: 12px;
+    color: #1a120b;
+    box-shadow: 0 0 20px rgba(255, 122, 0, 0.5);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    animation: grillPulse 2s infinite ease-in-out;
+}
+
+    #grillButton:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 35px rgba(255, 122, 0, 0.7);
     }
 
+@keyframes grillPulse {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(255, 122, 0, 0.3);
+    }
 
+    50% {
+        box-shadow: 0 0 40px rgba(255, 122, 0, 0.7);
+    }
+}
+
+/* ========================
+   TEXT COLORS
+======================== */
+#timer,
+#timeLeftDisplay {
+    color: var(--neon-turquoise);
+    text-shadow: 0 0 10px rgba(0, 231, 194, 0.6);
+    font-weight: 600;
+}
+
+#bonus {
+    color: var(--sand-gold);
+    text-shadow: 0 0 8px rgba(245, 199, 106, 0.5);
+}
