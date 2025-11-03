@@ -446,3 +446,34 @@ a {
     color: var(--sand-gold);
     text-shadow: 0 0 8px rgba(245, 199, 106, 0.5);
 }
+
+/* 🎮 Mini-mängu ala kujundus */
+#minigame-area {
+    background: var(--charcoal-dark);
+    border: 2px solid #ff9800;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(255, 152, 0, 0.4);
+    transition: background 0.5s ease;
+}
+
+/* Mänguala tekst */
+#minigame-area p {
+    color: #ffe8a1;
+    font-weight: 500;
+}
+
+/* Grillinupp */
+#grillButton {
+    background: linear-gradient(180deg, #ffb74d, #f57c00);
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(255, 140, 0, 0.6);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+#grillButton:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px rgba(255, 183, 77, 0.8);
+}
+
