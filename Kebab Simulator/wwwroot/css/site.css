@@ -477,3 +477,24 @@ a {
     box-shadow: 0 0 25px rgba(255, 183, 77, 0.8);
 }
 
+#minigame-area {
+    padding-bottom: 80px !important;
+    min-height: 480px;
+    position: relative;
+}
+
+#rx-box {
+    margin-bottom: 40px;
+}
+
+#grill-zone {
+    position: relative;
+    overflow: hidden; /* ära lase nupul kastist välja */
+    padding: 0;
+}
+
+#grillButton {
+    position: absolute; /* vajalik, et left/top toimiksid */
+}
+
+

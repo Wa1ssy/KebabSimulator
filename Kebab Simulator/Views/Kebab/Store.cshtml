@@ -5,90 +5,46 @@
     int grillLevel = ViewBag.GrillLevel;
 }
 
-<div class="container mt-5 text-center">
+<div class="container text-center mt-5">
     <h2 class="mb-3">🍢 Cooking: <span class="text-primary">@Model.Name</span></h2>
     <p class="text-muted">@Model.Description</p>
     <p><strong>Ingredients:</strong> @Model.Ingredients</p>
     <p><strong>🔥 Grill Level:</strong> @grillLevel</p>
-    <p><strong>Cooking time:</strong> @cookTime seconds</p>
 
-    <div id="timer" class="display-6 my-4">@cookTime</div>
+    <div id="timer" class="display-6 my-3">Choose a game to start</div>
 
-    <!-- 🔥 MINI-MÄNGU ALA -->
-    <div id="minigame-area"
-         style="position: relative; width: 420px; height: 360px; margin: 40px auto; border: 2px solid #111; border-radius: 10px; overflow: hidden; background: var(--charcoal-dark);">
-        <p class="mt-2">🔥 Klõpsa liikuvat nuppu, et vähendada küpsetusaega!</p>
-
-        <button id="grillButton"
-                class="btn btn-warning"
-                style="position: absolute; left: 150px; top: 100px; font-size: 18px; padding: 12px 24px; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.2);">
-            Grill!
-        </button>
-
-        <div style="position: absolute; bottom: 10px; left: 0; right: 0;">
-            <p>
-                Alles jäänud aeg: <span id="timeLeftDisplay">@cookTime</span> s<br>
-                Kiirendatud: <span id="bonus">0</span> s
-            </p>
+    <!-- 🎮 Game selection screen -->
+    <div id="select-screen" class="p-4 rounded shadow-lg" style="max-width:680px;margin:0 auto;background:#222;">
+        <h4 class="text-warning mb-3">Choose a mini-game to cook faster</h4>
+        <div class="d-grid gap-3">
+            <button class="btn btn-outline-warning btn-lg" data-game="clicker">🔥 Clicker</button>
+            <button class="btn btn-outline-info btn-lg" data-game="reaction">⚡ Reaction</button>
+            <button class="btn btn-outline-success btn-lg" data-game="math">🧮 Math</button>
         </div>
+        <small class="text-muted d-block mt-3">Time and bonus are shown inside the game.</small>
     </div>
 
-    <!-- 🔥 MINI-MÄNGU ALA LÕPP -->
+    <!-- 🔥 Mini-game mount point -->
+    <div id="minigame-area-wrapper" class="d-none" data-cooktime="@cookTime"></div>
 
-    <form asp-controller="Kebab" asp-action="Sell" method="post">
+    <form asp-controller="Kebab" asp-action="Sell" method="post" class="mt-3">
         <input type="hidden" name="recipeId" value="@Model.ID" />
         <button id="sellBtn" type="submit" class="btn btn-success btn-lg" disabled>
             Sell for $@Model.Price
         </button>
     </form>
 
-    <a asp-controller="Marketplace" asp-action="Index" class="btn btn-secondary mt-3">Back to Marketplace</a>
+    <div class="mt-3">
+        <a asp-controller="Marketplace" asp-action="Index" class="btn btn-secondary">Back to Marketplace</a>
+    </div>
 </div>
 
 @section Scripts {
-    <script>
-        let seconds = @cookTime;
-        const timerDisplay = document.getElementById("timer");
-        const sellBtn = document.getElementById("sellBtn");
-
-        const countdown = setInterval(() => {
-            seconds--;
-            timerDisplay.textContent = seconds;
-            document.getElementById("timeLeftDisplay").textContent = seconds;
-
-            if (seconds <= 0) {
-                clearInterval(countdown);
-                timerDisplay.textContent = "✅ Kebab is ready!";
-                sellBtn.disabled = false;
-            }
-        }, 1000);
-
-        const grillBtn = document.getElementById("grillButton");
-        const bonusEl = document.getElementById("bonus");
-        const container = document.getElementById("minigame-area");
-
-        let bonus = 0;
-
-               grillBtn.addEventListener("click", () => {
-            if (seconds > 1) {
-                seconds--;
-                bonus++;
-                document.getElementById("timeLeftDisplay").textContent = seconds;
-                bonusEl.textContent = bonus;
-            }
-
-            const areaWidth = container.offsetWidth - grillBtn.offsetWidth;
-            const topSafeZone = 150;
-            const bottomSafeZone = 150;
-            const areaHeight = container.offsetHeight - topSafeZone - bottomSafeZone;
-
-            const randomX = Math.floor(Math.random() * areaWidth);
-            const randomY = Math.floor(Math.random() * areaHeight) + topSafeZone;
-
-            grillBtn.style.left = randomX + "px";
-            grillBtn.style.top = randomY + "px";
-        });
-
-    </script>
+    <!-- Load mini-game scripts first -->
+    <script src="~/js/minigame.js"></script>   <!-- Clicker -->
+    <script src="~/js/reaction.js"></script>   <!-- Reaction -->
+    <script src="~/js/math.js"></script>       <!-- Math -->
+    <!-- Then the manager that injects the chosen game -->
+    <script src="~/js/store-manager.js"></script>
 }
-
+        
