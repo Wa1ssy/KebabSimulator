@@ -1,63 +1,138 @@
 ﻿/* ========================
-   VARIABLES – ERZHANN LEGACY THEME
+   ERZHANN LEGACY – THEME VARIABLES
 ======================== */
 :root {
-    --neon-turquoise: #00e7c2; /* õrn türkiisne neoon */
-    --ember-orange: #ff7a00; /* kebabi tuli / süsi */
-    --spice-brown: #5a2c0b; /* soe pruun taust */
-    --charcoal-dark: #0d1411; /* sügav tume roheline must */
-    --mint-light: #eafdf9; /* hele kontrast tekstidele */
-    --sand-gold: #f5c76a; /* kuldoranž aktsent */
-    --coal: #121212; /* must tekst / fallback */
-    --smoke-gray: #1f2623; /* sekundaartaust */
+    /* palette */
+    --neon-turquoise: #00e7c2;
+    --ember-orange: #ff7a00;
+    --spice-brown: #5a2c0b;
+    --charcoal-dark: #0d1411;
+    --mint-light: #eafdf9;
+    --sand-gold: #f5c76a;
+    --coal: #121212;
+    --smoke-gray: #1f2623;
     --brand-gradient: linear-gradient(135deg, var(--ember-orange), var(--sand-gold), var(--neon-turquoise));
-    --transition: all 0.3s ease;
+    --transition: all .3s ease;
+    /* LIGHT scheme (default) */
+    --bg: #ffffff;
+    --fg: #111111;
+    --muted: #374151;
+    --card: #ffffff;
+    --border: #e5e7eb;
+    --nav-bg: var(--brand-gradient);
+    --nav-fg: #111;
+    --thead-fg: #111;
+    --thead-bg: linear-gradient(90deg, var(--spice-brown), var(--ember-orange));
+}
+
+/* DARK scheme */
+html[data-theme="dark"] {
+    --bg: var(--charcoal-dark);
+    --fg: var(--mint-light);
+    --muted: #cbd5e1;
+    --card: var(--smoke-gray);
+    --border: rgba(255,255,255,0.12);
+    --nav-bg: var(--brand-gradient);
+    --nav-fg: var(--mint-light);
+    --thead-fg: var(--mint-light);
+    --thead-bg: linear-gradient(90deg, var(--spice-brown), var(--ember-orange));
 }
 
 /* ========================
-   GLOBAL STYLES
+   SOFT RESET & TYPOGRAPHY
 ======================== */
 * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+}
+
+html {
+    font-size: 16px;
 }
 
 body {
-    background: var(--charcoal-dark);
+    background: var(--bg);
+    color: var(--fg);
     font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    color: var(--mint-light);
     transition: var(--transition);
 }
 
 a {
+    color: var(--fg);
     text-decoration: none;
+}
+
+h1 {
+    font-weight: 700;
+    font-size: clamp(2rem, 2.5vw + 1rem, 3rem);
+}
+
+h2 {
+    font-weight: 700;
+    font-size: clamp(1.5rem, 1.5vw + 1rem, 2.25rem);
+}
+
+h3 {
+    font-weight: 600;
+    font-size: clamp(1.25rem, 1vw + .9rem, 1.5rem);
+}
+
+/* assistant income toast */
+.assistant-income {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #ffc107;
+    color: #222;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-weight: 600;
+    box-shadow: 0 0 10px rgba(0,0,0,.2);
+    animation: fadeUp 2s ease-out;
+    z-index: 9999;
+}
+
+@keyframes fadeUp {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    20% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
 }
 
 /* ========================
    NAVBAR
 ======================== */
 .navbar {
-    background: var(--brand-gradient) !important;
-    box-shadow: 0 4px 20px rgba(0, 231, 194, 0.25);
+    background: var(--nav-bg) !important;
+    box-shadow: 0 4px 20px rgba(0,231,194,.25);
 }
 
 .navbar-brand {
     font-weight: 700;
     letter-spacing: 2px;
-    font-size: x-large;
-    color: var(--mint-light) !important;
-    text-shadow: 0 0 12px rgba(0, 231, 194, 0.5);
+    font-size: clamp(1.25rem, 1vw + 1rem, 1.75rem);
+    color: var(--nav-fg) !important;
+    text-shadow: 0 0 12px rgba(0,231,194,.3);
 }
 
 .nav-link {
     position: relative;
     margin: 0 15px;
     font-size: large;
-    color: var(--mint-light) !important;
+    color: var(--nav-fg) !important;
     transition: var(--transition);
 }
 
@@ -69,7 +144,7 @@ a {
         width: 0;
         height: 2px;
         background: var(--neon-turquoise);
-        transition: width 0.3s ease;
+        transition: width .3s ease;
     }
 
     .nav-link:hover::after {
@@ -77,55 +152,18 @@ a {
     }
 
 /* ========================
-   SIDE IMAGES
-======================== */
-.container-with-sides {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    position: relative;
-}
-
-.main-container {
-    flex: 1;
-    max-width: 900px;
-    padding: 20px;
-    text-align: center;
-}
-
-.side-image {
-    position: fixed;
-    bottom: 120px;
-    width: 400px;
-    z-index: 100;
-}
-
-    .side-image.left {
-        left: 20px;
-    }
-
-    .side-image.right {
-        right: 20px;
-    }
-
-    .side-image img {
-        max-width: 100%;
-        height: auto;
-    }
-
-/* ========================
-   HEADER / HERO
+   HERO
 ======================== */
 .kebab-header {
     background: linear-gradient(45deg, var(--ember-orange), var(--sand-gold), var(--neon-turquoise));
     background-size: 300% 300%;
-    color: var(--charcoal-dark);
+    color: var(--coal);
     padding: 4rem 2rem;
     margin-bottom: 2rem;
     text-align: center;
     clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
     animation: gradientMove 8s ease infinite;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 25px rgba(0,0,0,.2);
 }
 
 @keyframes gradientMove {
@@ -145,73 +183,111 @@ a {
 /* ========================
    CARDS
 ======================== */
+.card,
+.kebab-card,
+.panel,
+.table-container,
+.custom-container,
+.info-box {
+    background: var(--card);
+    color: var(--fg);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.12);
+    transition: background-color .3s ease, color .3s ease, border-color .3s ease, transform .3s ease, box-shadow .3s ease;
+}
+
 .kebab-card {
-    background: var(--smoke-gray);
-    color: var(--mint-light);
-    border-radius: 20px;
     padding: 2rem;
     margin: 1rem 0;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-    border: 1px solid rgba(0, 231, 194, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     backdrop-filter: blur(5px);
 }
 
-    .kebab-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0 25px rgba(255, 122, 0, 0.3);
+    .card:hover, .kebab-card:hover {
+        transform: translateY(-6px);
+        border-color: var(--ember-orange);
+        box-shadow: 0 0 25px rgba(255,122,0,.25);
     }
+
+.opacity-50 {
+    opacity: .4;
+    filter: grayscale(40%);
+}
+
+.card-title {
+    color: var(--sand-gold);
+    text-shadow: 0 0 6px rgba(245,199,106,.35);
+}
+
+.card .text-muted {
+    color: color-mix(in srgb, var(--fg) 55%, transparent) !important;
+}
+
+.card p strong {
+    color: var(--neon-turquoise);
+}
 
 /* ========================
    BUTTONS
 ======================== */
-.btn-primary {
+.btn-primary,
+.card .btn-success {
     background: var(--brand-gradient);
     border: none;
-    padding: 0.8rem 2rem;
-    border-radius: 50px;
+    padding: .8rem 2rem;
+    border-radius: 30px;
     position: relative;
     overflow: hidden;
-    transition: var(--transition);
-    color: var(--charcoal-dark);
+    color: #111 !important;
     font-weight: 600;
-    box-shadow: 0 0 15px rgba(0, 231, 194, 0.3);
+    box-shadow: 0 0 15px rgba(0,231,194,.25);
+    transition: var(--transition);
 }
 
-    .btn-primary::after {
+    .btn-primary::after,
+    .card .btn-success::after {
         content: '';
         position: absolute;
         top: 0;
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
-        transition: all 0.6s ease;
+        background: linear-gradient(120deg, transparent, rgba(255,255,255,.35), transparent);
+        transition: all .6s ease;
     }
 
-    .btn-primary:hover {
+    .btn-primary:hover,
+    .card .btn-success:hover {
         transform: translateY(-2px);
-        box-shadow: 0 0 25px rgba(255, 122, 0, 0.4);
+        box-shadow: 0 0 25px rgba(255,122,0,.35);
     }
 
-        .btn-primary:hover::after {
+        .btn-primary:hover::after,
+        .card .btn-success:hover::after {
             left: 100%;
         }
 
+.card .btn-secondary[disabled] {
+    background: color-mix(in srgb, var(--card) 70%, #aaa 30%);
+    color: color-mix(in srgb, var(--fg) 45%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border) 70%, #aaa 30%);
+}
+
 /* ========================
-   TABLES & FORMS
+   TABLES
 ======================== */
 .table, .kebab-table {
-    width: 90%;
-    margin: 2rem auto;
+    width: 100%;
+    margin: 2rem 0;
     border-collapse: separate;
-    border-spacing: 0 0.75rem;
-    color: var(--mint-light);
+    border-spacing: 0 .75rem;
+    background: transparent;
+    color: var(--fg);
 }
 
     .table thead, .kebab-table thead {
-        background: linear-gradient(90deg, var(--spice-brown), var(--ember-orange));
-        color: var(--mint-light);
+        background: var(--thead-bg);
+        color: var(--thead-fg);
     }
 
         .table thead th, .kebab-table thead th {
@@ -221,267 +297,76 @@ a {
         }
 
     .table tbody tr, .kebab-table tbody tr {
-        background: var(--smoke-gray);
-        transition: background 0.3s ease, transform 0.2s ease;
+        background: var(--card) !important;
+        color: var(--fg) !important;
+        transition: background .3s ease, transform .2s ease, box-shadow .2s ease;
         cursor: pointer;
     }
 
         .table tbody tr:hover, .kebab-table tbody tr:hover {
-            background: rgba(255, 122, 0, 0.15);
-            transform: scale(1.02);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            background: rgba(255,122,0,.08);
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(0,0,0,.12);
         }
 
-/* Vormid ja sisendid */
+    .table th, .table td, .kebab-table th, .kebab-table td {
+        border-color: var(--border) !important;
+    }
+
+/* ========================
+   FORMS
+======================== */
 .form-control {
     border-radius: 50px;
-    padding: 0.8rem 1.5rem;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    background: var(--smoke-gray);
-    color: var(--mint-light);
-    transition: border-color 0.3s ease, box-shadow 0.2s ease;
+    padding: .8rem 1.5rem;
+    border: 2px solid rgba(0,0,0,.08);
+    background: var(--card);
+    color: var(--fg);
+    transition: border-color .3s ease, box-shadow .2s ease, background-color .3s ease, color .3s ease;
 }
 
     .form-control:focus {
         border-color: var(--ember-orange);
-        box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.25);
+        box-shadow: 0 0 0 4px rgba(255,122,0,.25);
         outline: none;
     }
 
 /* ========================
-   FOOTER
-======================== */
-.footer {
-    background: linear-gradient(180deg, var(--spice-brown), var(--charcoal-dark));
-    color: rgba(255,255,255,0.85);
-    padding: 2rem 0;
-    text-align: center;
-    margin-top: auto;
-    font-size: 0.9rem;
-    text-shadow: 0 0 6px rgba(0, 231, 194, 0.25);
-}
-
-/* ========================
-   RESPONSIVE
-======================== */
-@media (max-width: 768px) {
-    .navbar {
-        font-size: 1.25rem;
-        padding: 0.75rem 1rem;
-    }
-
-    .table, .kebab-table {
-        width: 100%;
-        margin: 1rem 0;
-    }
-
-    .kebab-header {
-        padding: 2rem 1rem;
-    }
-
-    .hud-panel {
-        top: auto;
-        bottom: 1rem;
-        right: 1rem;
-        font-size: 0.9rem;
-    }
-
-    table table-hover {
-        text-align: center !important;
-    }
-
-    thead-dark {
-        text-align: center !important;
-    }
-}
-
-/* ========================
-   MARKETPLACE CARDS
-======================== */
-.card {
-    background: rgba(20, 26, 23, 0.9);
-    border: 1px solid rgba(0, 231, 194, 0.25);
-    border-radius: 18px;
-    color: var(--mint-light);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    backdrop-filter: blur(6px);
-}
-
-    .card:hover {
-        transform: translateY(-6px);
-        border-color: var(--ember-orange);
-        box-shadow: 0 0 25px rgba(255, 122, 0, 0.25);
-    }
-
-/* Locked cards (opacity-50) */
-.opacity-50 {
-    opacity: 0.4;
-    filter: grayscale(40%);
-}
-
-/* Card titles */
-.card-title {
-    color: var(--sand-gold);
-    text-shadow: 0 0 6px rgba(245, 199, 106, 0.4);
-}
-
-/* Card descriptions */
-.card .text-muted {
-    color: rgba(234, 253, 249, 0.7) !important;
-}
-
-/* Price and level info */
-.card p strong {
-    color: var(--neon-turquoise);
-}
-
-/* Buttons */
-.card .btn-success {
-    background: var(--brand-gradient);
-    border: none;
-    color: var(--charcoal-dark);
-    font-weight: 600;
-    border-radius: 30px;
-    box-shadow: 0 0 10px rgba(0, 231, 194, 0.25);
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
-}
-
-    .card .btn-success:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 0 20px rgba(255, 122, 0, 0.4);
-    }
-
-/* Locked button */
-.card .btn-secondary[disabled] {
-    background: rgba(90, 44, 11, 0.3);
-    color: rgba(255, 255, 255, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-/* ========================
-   COOKING VIEW DESIGN
+   COOKING VIEW / MINIGAME
 ======================== */
 .container h2 {
     color: var(--sand-gold);
-    text-shadow: 0 0 8px rgba(245, 199, 106, 0.4);
+    text-shadow: 0 0 8px rgba(245,199,106,.35);
 }
 
 .container p strong {
     color: var(--neon-turquoise);
 }
 
-/* Timer display */
-#timer {
+#timer, #timeLeftDisplay {
     color: var(--neon-turquoise);
-    text-shadow: 0 0 15px rgba(0, 231, 194, 0.6);
+    text-shadow: 0 0 10px rgba(0,231,194,.6);
     font-weight: 600;
 }
 
-/* ========================
-   MINIGAME AREA — FIXED DARK MODE
-======================== */
 #minigame-area {
     position: relative;
     width: 420px;
-    height: 360px;
+    min-height: 480px;
     margin: 40px auto;
-    border: 2px solid rgba(0, 231, 194, 0.25);
+    padding-bottom: 80px !important;
+    border: 2px solid rgba(0,231,194,.25);
     border-radius: 15px;
-    /* 🌒 Tume suitsune taust */
-    background: radial-gradient(circle at 40% 40%, rgba(255, 122, 0, 0.2), rgba(13, 20, 17, 0.95));
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6), inset 0 0 35px rgba(255, 122, 0, 0.15);
-    backdrop-filter: blur(6px);
-    color: var(--mint-light);
-    transition: all 0.3s ease;
+    background: var(--card);
+    color: var(--fg);
+    box-shadow: 0 0 20px rgba(0,0,0,.15);
+    transition: all .3s ease;
 }
 
     #minigame-area p {
-        color: rgba(234, 253, 249, 0.9);
+        color: color-mix(in srgb, var(--fg) 85%, transparent);
         font-weight: 500;
     }
-
-/* ========================
-   GRILL BUTTON (fire vibe)
-======================== */
-#grillButton {
-    background: linear-gradient(145deg, #ff7a00, #ffb84d);
-    border: none;
-    font-size: 18px;
-    padding: 14px 28px;
-    border-radius: 12px;
-    color: #1a120b;
-    box-shadow: 0 0 20px rgba(255, 122, 0, 0.5);
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
-    animation: grillPulse 2s infinite ease-in-out;
-}
-
-    #grillButton:hover {
-        transform: scale(1.1);
-        box-shadow: 0 0 35px rgba(255, 122, 0, 0.7);
-    }
-
-@keyframes grillPulse {
-    0%, 100% {
-        box-shadow: 0 0 20px rgba(255, 122, 0, 0.3);
-    }
-
-    50% {
-        box-shadow: 0 0 40px rgba(255, 122, 0, 0.7);
-    }
-}
-
-/* ========================
-   TEXT COLORS
-======================== */
-#timer,
-#timeLeftDisplay {
-    color: var(--neon-turquoise);
-    text-shadow: 0 0 10px rgba(0, 231, 194, 0.6);
-    font-weight: 600;
-}
-
-#bonus {
-    color: var(--sand-gold);
-    text-shadow: 0 0 8px rgba(245, 199, 106, 0.5);
-}
-
-/* 🎮 Mini-mängu ala kujundus */
-#minigame-area {
-    background: var(--charcoal-dark);
-    border: 2px solid #ff9800;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(255, 152, 0, 0.4);
-    transition: background 0.5s ease;
-}
-
-/* Mänguala tekst */
-#minigame-area p {
-    color: #ffe8a1;
-    font-weight: 500;
-}
-
-/* Grillinupp */
-#grillButton {
-    background: linear-gradient(180deg, #ffb74d, #f57c00);
-    color: #fff;
-    border: none;
-    font-weight: bold;
-    box-shadow: 0 0 15px rgba(255, 140, 0, 0.6);
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
-}
-
-#grillButton:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 25px rgba(255, 183, 77, 0.8);
-}
-
-#minigame-area {
-    padding-bottom: 80px !important;
-    min-height: 480px;
-    position: relative;
-}
 
 #rx-box {
     margin-bottom: 40px;
@@ -489,12 +374,58 @@ a {
 
 #grill-zone {
     position: relative;
-    overflow: hidden; /* ära lase nupul kastist välja */
+    overflow: hidden;
     padding: 0;
 }
 
 #grillButton {
-    position: absolute; /* vajalik, et left/top toimiksid */
+    position: absolute;
+    background: linear-gradient(180deg, #ffb74d, #f57c00);
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(255,140,0,.6);
+    transition: transform .2s ease, box-shadow .3s ease;
 }
 
+    #grillButton:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 25px rgba(255,183,77,.8);
+    }
 
+/* ========================
+   FOOTER
+======================== */
+.footer {
+    background: linear-gradient(180deg, var(--spice-brown), var(--bg));
+    color: color-mix(in srgb, var(--fg) 75%, transparent);
+    padding: 2rem 0;
+    text-align: center;
+    margin-top: auto;
+    font-size: .9rem;
+}
+
+/* ========================
+   RESPONSIVE
+======================== */
+@media (max-width: 768px) {
+    .navbar {
+        font-size: 1.1rem;
+        padding: .75rem 1rem;
+    }
+
+    .kebab-header {
+        padding: 2rem 1rem;
+    }
+
+    #minigame-area {
+        width: 100%;
+    }
+}
+
+/* ========================
+   UTILITIES
+======================== */
+.text-muted {
+    color: var(--muted) !important;
+}

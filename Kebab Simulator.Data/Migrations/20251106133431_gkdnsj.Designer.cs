@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kebab_Simulator.Data.Migrations
 {
     [DbContext(typeof(KebabSimulatorContext))]
-    [Migration("20251103074259_njksgdnjgs")]
-    partial class njksgdnjgs
+    [Migration("20251106133431_gkdnsj")]
+    partial class gkdnsj
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
