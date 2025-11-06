@@ -75,6 +75,8 @@ namespace Kebab_Simulator.Controllers
             int grillLevel = player.GrillLevel;
             int spiceLevel = player.SpiceLevel;
             int assistantLevel = player.AssistantLevel;
+            int houseLevel = player.HouseLevel;
+            int carLevel = player.CarLevel;
 
             var upgrades = new List<UpgradeViewModel>
     {
@@ -101,6 +103,22 @@ namespace Kebab_Simulator.Controllers
             CurrentLevel = assistantLevel,
             MaxLevel = 3,
             UpgradeCost = 500 + (assistantLevel * 200)
+        },
+        new UpgradeViewModel
+        {
+            Name = "🏠︎ House",
+            Description = "Cool house, increases xp gain by 10.",
+            CurrentLevel = houseLevel,
+            MaxLevel = 3,
+            UpgradeCost = 1000 + (houseLevel * 2000)
+        },
+        new UpgradeViewModel
+        {
+            Name = "⛐ Car",
+            Description = "Car tuning, increases xp gain by 5.",
+            CurrentLevel = carLevel,
+            MaxLevel = 3,
+            UpgradeCost = 500 + (carLevel * 500)
         }
     };
 

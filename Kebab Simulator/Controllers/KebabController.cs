@@ -322,22 +322,26 @@ namespace Kebab_Simulator.Controllers
             decimal spiceMultiplier = 1 + (player.SpiceLevel * 0.10m);
             int finalPrice = (int)(recipe.Price * spiceMultiplier);
 
+            int xpGain = 20 + (player.HouseLevel * 10) + (player.CarLevel * 5);
+
             player.KebabBankAccount += finalPrice;
-            player.KebabXP += 20;
+            player.KebabXP += xpGain;
 
             if (player.KebabXP >= player.KebabXPNextLevel)
             {
                 player.KebabLevel++;
                 player.KebabXP = 0;
                 player.KebabXPNextLevel += 100;
+                TempData["LevelUp"] = $"🎉 Level up! You are now Level {player.KebabLevel}!";
             }
 
             await _context.SaveChangesAsync();
 
             TempData["Message"] =
-                $"You sold {recipe.Name} for ${finalPrice}! (+{player.SpiceLevel * 10}% bonus)";
+                $"You sold {recipe.Name} for ${finalPrice}! (+{player.SpiceLevel * 10}% bonus, +{xpGain} XP)";
             return RedirectToAction("Index", "Kebab");
         }
+
 
 
 
@@ -388,6 +392,32 @@ namespace Kebab_Simulator.Controllers
                     player.KebabBankAccount -= assistantCost;
                     player.AssistantLevel++;
                     TempData["Message"] = $"👨‍🍳 Assistant Level {player.AssistantLevel}!";
+                    break;
+
+                case "🏠︎ House":
+                    if (player.HouseLevel >= 3)
+                    { TempData["Error"] = " House maxed!"; break; }
+
+                    int houseCost = 1000 + (player.HouseLevel * 2000);
+                    if (player.KebabBankAccount < houseCost)
+                    { TempData["Error"] = "Not enough $"; break; }
+
+                    player.KebabBankAccount -= houseCost;
+                    player.HouseLevel++;
+                    TempData["Message"] = $"🏠︎ House Level {player.HouseLevel}!";
+                    break;
+
+                case "⛐ Car":
+                    if (player.CarLevel >= 3)
+                    { TempData["Error"] = " Car maxed!"; break; }
+
+                    int carCost = 500 + (player.CarLevel * 500);
+                    if (player.KebabBankAccount < carCost)
+                    { TempData["Error"] = "Not enough $"; break; }
+
+                    player.KebabBankAccount -= carCost;
+                    player.CarLevel++;
+                    TempData["Message"] = $"⛐ Car Level {player.CarLevel}!";
                     break;
             }
 
