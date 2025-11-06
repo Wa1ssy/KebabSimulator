@@ -4,6 +4,7 @@ using Kebab_Simulator.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kebab_Simulator.Data.Migrations
 {
     [DbContext(typeof(KebabSimulatorContext))]
-    partial class KebabSimulatorContextModelSnapshot : ModelSnapshot
+    [Migration("20251106112250_shgqu")]
+    partial class shgqu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -188,9 +191,6 @@ namespace Kebab_Simulator.Data.Migrations
                     b.Property<int>("AssistantLevel")
                         .HasColumnType("int");
 
-                    b.Property<int>("CarLevel")
-                        .HasColumnType("int");
-
                     b.Property<int>("Checkout")
                         .HasColumnType("int");
 
@@ -201,9 +201,6 @@ namespace Kebab_Simulator.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("GrillLevel")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HouseLevel")
                         .HasColumnType("int");
 
                     b.Property<int>("Ingredients")
