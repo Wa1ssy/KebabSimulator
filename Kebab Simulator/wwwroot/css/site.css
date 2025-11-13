@@ -429,3 +429,17 @@ h3 {
 .text-muted {
     color: var(--muted) !important;
 }
+
+/*
+    Cocrkoach
+*/
+
+#cockroach {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 9999;
+    transition: left 0.8s linear, top 0.8s linear, transform 0.5s linear, opacity 1s ease;
+    opacity: 1;
+}

@@ -342,6 +342,28 @@ namespace Kebab_Simulator.Controllers
             return RedirectToAction("Index", "Kebab");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> KillCockroach()
+        {
+            var player = await _context.Kebabs.FirstOrDefaultAsync();
+            if (player == null)
+                return Json(new { xpGained = 0, newXP = 0 });
+
+            int xp = 50;
+            player.KebabXP += xp;
+
+            if (player.KebabXP >= player.KebabXPNextLevel)
+            {
+                player.KebabLevel++;
+                player.KebabXP = player.KebabXP - player.KebabXPNextLevel;
+                player.KebabXPNextLevel += 100;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Json(new { xpGained = xp, newXP = player.KebabXP });
+        }
+
 
 
 

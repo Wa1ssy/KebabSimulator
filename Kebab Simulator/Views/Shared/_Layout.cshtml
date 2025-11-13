@@ -80,6 +80,120 @@
 
     @if (signInManager.IsSignedIn(User))
     {
+        <img id="cockroach" src="~/images/cockroach_alive.png"
+             style="display:none; position:fixed; width:50px; height:50px; cursor:pointer; z-index:9999;">
+
+        <script>
+            (function() {
+                const cockroach = document.getElementById("cockroach");
+                if (!cockroach) return;
+
+                let isAlive = true;
+
+                function showCockroach(x, y) {
+                    cockroach.style.left = x + 'px';
+                    cockroach.style.top = y + 'px';
+                    cockroach.src = '/images/cockroach_alive.png';
+                    cockroach.style.display = 'block';
+                    cockroach.style.opacity = 1;
+                    localStorage.setItem('cockroachKilled', 'false');
+                    moveRandomly();
+                }
+
+                function moveRandomly() {
+                    if (cockroach.style.display !== 'block') return;
+                    const newX = Math.random() * (window.innerWidth - 100);
+                    const newY = Math.random() * (window.innerHeight - 100);
+                    const angle = (Math.random() * 60) - 30;
+                    cockroach.style.transform = 'rotate(' + angle + 'deg)';
+                    cockroach.style.left = newX + 'px';
+                    cockroach.style.top = newY + 'px';
+                    localStorage.setItem('cockroachX', newX);
+                    localStorage.setItem('cockroachY', newY);
+                    setTimeout(moveRandomly, 500 + Math.random() * 1000);
+                }
+
+                document.addEventListener('mousemove', (e) => {
+                    if (!isAlive || cockroach.style.display !== 'block') return;
+                    const rect = cockroach.getBoundingClientRect();
+                    const dx = e.clientX - (rect.left + rect.width / 2);
+                    const dy = e.clientY - (rect.top + rect.height / 2);
+                    const distance = Math.sqrt(dx*dx + dy*dy);
+
+                    if (distance < 100) {
+                        let evadeX = rect.left - dx / distance * 50;
+                        let evadeY = rect.top - dy / distance * 50;
+                        evadeX = Math.max(0, Math.min(evadeX, window.innerWidth - rect.width));
+                        evadeY = Math.max(0, Math.min(evadeY, window.innerHeight - rect.height));
+                        cockroach.style.left = evadeX + 'px';
+                        cockroach.style.top = evadeY + 'px';
+                    }
+                });
+
+                function spawnCockroach() {
+                    if (cockroach.style.display === 'block') return;
+                    const x = Math.random() * (window.innerWidth - 100);
+                    const y = Math.random() * (window.innerHeight - 100);
+                    showCockroach(x, y);
+                }
+
+                function scheduleNextSpawn() {
+                    const delay = 45000 + Math.random() * 55000;
+                    setTimeout(() => {
+                        const killed = localStorage.getItem('cockroachKilled');
+                        if (killed === 'true') {
+                            const respawnDelay = 30000 + Math.random() * 30000;
+                            setTimeout(spawnCockroach, respawnDelay);
+                        } else if (Math.random() < 0.3) {
+                            spawnCockroach();
+                        }
+                        scheduleNextSpawn();
+                    }, delay);
+                }
+
+                const killed = localStorage.getItem('cockroachKilled');
+                const posX = parseFloat(localStorage.getItem('cockroachX'));
+                const posY = parseFloat(localStorage.getItem('cockroachY'));
+                if (killed !== 'true' && !isNaN(posX) && !isNaN(posY)) {
+                    showCockroach(posX, posY);
+                }
+
+                cockroach.addEventListener('click', async () => {
+                    if (!isAlive) return;
+                    isAlive = false;
+
+                    cockroach.src = '/images/cockroach_dead.png';
+                    cockroach.style.transition = 'opacity 1s ease';
+                    cockroach.style.opacity = 0;
+                    localStorage.setItem('cockroachKilled', 'true');
+
+                    try {
+                        const res = await fetch('/Kebab/KillCockroach', { method: 'POST' });
+                        const data = await res.json();
+
+                        const msg = document.createElement('div');
+                        msg.textContent = `+${data.xpGained} XP for killing cockroach`;
+                        msg.className = "assistant-income";
+                        document.body.appendChild(msg);
+                        setTimeout(() => msg.remove(), 3000);
+
+                        console.log(`Gained ${data.xpGained} XP, total XP: ${data.newXP}`);
+                    } catch (e) {
+                        console.error("Failed to gain XP", e);
+                    }
+
+                    setTimeout(() => {
+                        cockroach.style.display = 'none';
+                        cockroach.style.transition = 'left 0.8s linear, top 0.8s linear, transform 0.5s linear, opacity 1s ease';
+                        cockroach.style.opacity = 1;
+                        isAlive = true;
+                    }, 3000);
+                });
+
+                scheduleNextSpawn();
+            })();
+        </script>
+
         <script>
             let playerMoney = 0;
             async function fetchPlayerMoney() {
