@@ -1,12 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Kebab_Simulator.Core.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Kebab_Simulator.Controllers
 {
-    public class BaseKebabController : Controller
+    public abstract class BaseKebabController : Controller
     {
-        public IActionResult Index()
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
-            return View();
+            base.OnActionExecuting(context);
+
+            bool showHealthInspection = HealthInspectionService.ShouldShowHealthInspection(0.2);
+
+            ViewBag.ShowHealthInspection = showHealthInspection;
         }
     }
 }

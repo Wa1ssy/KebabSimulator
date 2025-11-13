@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kebab_Simulator.Core.Services
 {
-    internal class HealthInspectionService
+    public static class HealthInspectionService
     {
+        private static readonly Random _random = new Random();
+        public static bool ShouldShowHealthInspection(double chance = 0.2)
+        {
+            return _random.NextDouble() < chance;
+        }
     }
 }

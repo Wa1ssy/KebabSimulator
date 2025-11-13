@@ -14,6 +14,38 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <div id="health-popup-overlay" style="
+        display:none;
+        position:fixed;
+        top:0; left:0;
+        width:100%; height:100%;
+        background:rgba(0,0,0,0.5);
+        z-index:9998;
+    "></div>
+
+    <div id="health-popup" style="
+        display:none;
+        position:fixed;
+        top:50%; left:50%;
+        transform:translate(-50%, -50%);
+        background:white;
+        padding:25px 30px;
+        border-radius:10px;
+        box-shadow:0 0 10px rgba(0,0,0,0.3);
+        z-index:9999;
+        text-align:center;
+        font-size:20px;
+    ">
+        <p id="health-popup-text">Health inspection</p>
+        <button id="health-popup-close" style="
+            margin-top:15px;
+            padding:8px 20px;
+            font-size:16px;
+            cursor:pointer;
+        ">
+            OK
+        </button>
+    </div>
     <header>
         <nav class="navbar navbar-expand-sm border-bottom box-shadow mb-3">
             <div class="container-fluid px-3">
@@ -118,5 +150,32 @@
             });
         </script>
     }
+
+    <script>
+        (function () {
+            var showHealth =
+        @((ViewBag.ShowHealthInspection ?? false).ToString().ToLower());
+
+            if (!showHealth) {
+                return;
+            }
+
+            var overlay = document.getElementById("health-popup-overlay");
+            var popup = document.getElementById("health-popup");
+            var closeBtn = document.getElementById("health-popup-close");
+            var textEl = document.getElementById("health-popup-text");
+
+            textEl.innerText = "Tervisekontroll!";
+
+            overlay.style.display = "block";
+            popup.style.display = "block";
+
+            closeBtn.onclick = function () {
+                overlay.style.display = "none";
+                popup.style.display = "none";
+            };
+        })();
+    </script>
+
 </body>
 </html>
