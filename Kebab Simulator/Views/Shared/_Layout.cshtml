@@ -14,6 +14,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <div id="health-popup-overlay"></div>
+
+    <div id="health-popup">
+        <p id="health-popup-text">Health inspection</p>
+        <button id="health-popup-close">
+            OK
+        </button>
+    </div>
     <header>
         <nav class="navbar navbar-expand-sm border-bottom box-shadow mb-3">
             <div class="container-fluid px-3">
@@ -37,10 +45,6 @@
                         }
                     </ul>
 
-                    <ul class="navbar-nav ms-auto align-items-center">
-                        <li class="nav-item me-2">
-                            <button id="theme-toggle" class="btn btn-sm" title="Lülita teemat">🌓</button>
-                        </li>
 
                         @if (signInManager.IsSignedIn(User))
                         {
@@ -232,5 +236,32 @@
             });
         </script>
     }
+
+    <script>
+        (function () {
+            var showHealth =
+        @((ViewBag.ShowHealthInspection ?? false).ToString().ToLower());
+
+            if (!showHealth) {
+                return;
+            }
+
+            var overlay = document.getElementById("health-popup-overlay");
+            var popup = document.getElementById("health-popup");
+            var closeBtn = document.getElementById("health-popup-close");
+            var textEl = document.getElementById("health-popup-text");
+
+            textEl.innerText = "Tervisekontroll!";
+
+            overlay.style.display = "block";
+            popup.style.display = "block";
+
+            closeBtn.onclick = function () {
+                overlay.style.display = "none";
+                popup.style.display = "none";
+            };
+        })();
+    </script>
+
 </body>
 </html>

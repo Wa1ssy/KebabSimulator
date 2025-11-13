@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Kebab_Simulator.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class gkdnsj : Migration
+    public partial class njkgds : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -121,6 +121,8 @@ namespace Kebab_Simulator.Data.Migrations
                     GrillLevel = table.Column<int>(type: "int", nullable: false),
                     SpiceLevel = table.Column<int>(type: "int", nullable: false),
                     AssistantLevel = table.Column<int>(type: "int", nullable: false),
+                    HouseLevel = table.Column<int>(type: "int", nullable: false),
+                    CarLevel = table.Column<int>(type: "int", nullable: false),
                     PassiveIncomeLevel = table.Column<int>(type: "int", nullable: false),
                     KebabBankAccount = table.Column<int>(type: "int", nullable: false),
                     KebabStart = table.Column<DateTime>(type: "datetime2", nullable: false),

@@ -5,7 +5,7 @@
 namespace Kebab_Simulator.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class HOUSExCAR : Migration
+    public partial class njkgdsdsdsa : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

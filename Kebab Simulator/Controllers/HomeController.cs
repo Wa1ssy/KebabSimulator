@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Kebab_Simulator.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseKebabController
     {
         private readonly ILogger<HomeController> _logger;
 
