@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kebab Simulator.Application
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kebab Simulator.Data", "Kebab Simulator.Data\Kebab Simulator.Data.csproj", "{FA32AD11-58F6-4A76-BDB4-BA4D4030CE6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kebab Simulator.TestingxUnit", "Kebab Simulator.TestingxUnit\Kebab Simulator.TestingxUnit.csproj", "{7CBE4CD5-9EFD-4BED-9C38-081B71A37FA7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{FA32AD11-58F6-4A76-BDB4-BA4D4030CE6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA32AD11-58F6-4A76-BDB4-BA4D4030CE6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA32AD11-58F6-4A76-BDB4-BA4D4030CE6F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7CBE4CD5-9EFD-4BED-9C38-081B71A37FA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7CBE4CD5-9EFD-4BED-9C38-081B71A37FA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7CBE4CD5-9EFD-4BED-9C38-081B71A37FA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7CBE4CD5-9EFD-4BED-9C38-081B71A37FA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
