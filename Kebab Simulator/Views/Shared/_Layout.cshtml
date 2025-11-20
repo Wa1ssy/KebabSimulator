@@ -15,13 +15,11 @@
 </head>
 <body>
     <div id="health-popup-overlay"></div>
-
     <div id="health-popup">
         <p id="health-popup-text">Health inspection</p>
-        <button id="health-popup-close">
-            OK
-        </button>
+        <button id="health-popup-close">OK</button>
     </div>
+
     <header>
         <nav class="navbar navbar-expand-sm border-bottom box-shadow mb-3">
             <div class="container-fluid px-3">
@@ -45,7 +43,7 @@
                         }
                     </ul>
 
-
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         @if (signInManager.IsSignedIn(User))
                         {
                             <li class="nav-item ms-3">
@@ -58,10 +56,10 @@
                         }
                         else
                         {
-                            <li>
+                            <li class="nav-item">
                                 <a class="nav-link text-light" asp-controller="Accounts" asp-action="Register">Register</a>
                             </li>
-                            <li>
+                            <li class="nav-item">
                                 <a class="nav-link text-light" asp-controller="Accounts" asp-action="Login">Login</a>
                             </li>
                         }
@@ -86,9 +84,10 @@
     {
         <img id="cockroach" src="~/images/cockroach_alive.png"
              style="display:none; position:fixed; width:50px; height:50px; cursor:pointer; z-index:9999;">
-
         <script>
-            (function() {
+            (function () {
+                window.cockroachOnScreen = false;
+
                 const cockroach = document.getElementById("cockroach");
                 if (!cockroach) return;
 
@@ -100,6 +99,8 @@
                     cockroach.src = '/images/cockroach_alive.png';
                     cockroach.style.display = 'block';
                     cockroach.style.opacity = 1;
+                    window.cockroachOnScreen = true;
+
                     localStorage.setItem('cockroachKilled', 'false');
                     moveRandomly();
                 }
@@ -122,7 +123,7 @@
                     const rect = cockroach.getBoundingClientRect();
                     const dx = e.clientX - (rect.left + rect.width / 2);
                     const dy = e.clientY - (rect.top + rect.height / 2);
-                    const distance = Math.sqrt(dx*dx + dy*dy);
+                    const distance = Math.sqrt(dx * dx + dy * dy);
 
                     if (distance < 100) {
                         let evadeX = rect.left - dx / distance * 50;
@@ -188,6 +189,8 @@
 
                     setTimeout(() => {
                         cockroach.style.display = 'none';
+                        window.cockroachOnScreen = false;
+
                         cockroach.style.transition = 'left 0.8s linear, top 0.8s linear, transform 0.5s linear, opacity 1s ease';
                         cockroach.style.opacity = 1;
                         isAlive = true;
@@ -197,9 +200,9 @@
                 scheduleNextSpawn();
             })();
         </script>
-
         <script>
             let playerMoney = 0;
+
             async function fetchPlayerMoney() {
                 try {
                     const res = await fetch('/Kebab/GetBankBalance');
@@ -236,11 +239,9 @@
             });
         </script>
     }
-
     <script>
         (function () {
-            var showHealth =
-        @((ViewBag.ShowHealthInspection ?? false).ToString().ToLower());
+            var showHealth = @((ViewBag.ShowHealthInspection ?? false).ToString().ToLower());
 
             if (!showHealth) {
                 return;
@@ -250,8 +251,14 @@
             var popup = document.getElementById("health-popup");
             var closeBtn = document.getElementById("health-popup-close");
             var textEl = document.getElementById("health-popup-text");
+            var cockroachPresent = (window.cockroachOnScreen === true);
 
-            textEl.innerText = "Tervisekontroll!";
+            if (cockroachPresent) {
+                textEl.innerText = "Health inspection Failed! -100$";
+                applyHealthPenalty();
+            } else {
+                textEl.innerText = "Health inspection successful!";
+            }
 
             overlay.style.display = "block";
             popup.style.display = "block";
@@ -261,6 +268,24 @@
                 popup.style.display = "none";
             };
         })();
+
+        async function applyHealthPenalty() {
+            try {
+                const res = await fetch('/Kebab/ApplyHealthPenalty', { method: 'POST' });
+                const data = await res.json();
+
+                if (data.success) {
+                    var elem = document.getElementById('bank-amount');
+                    if (elem) {
+                        elem.textContent = data.newBank;
+                    }
+                } else {
+                    console.error("Health penalty failed:", data.message);
+                }
+            } catch (e) {
+                console.error("Error applying health penalty", e);
+            }
+        }
     </script>
 
 </body>

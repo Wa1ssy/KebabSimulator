@@ -5,18 +5,21 @@ using Kebab_Simulator.Data;
 using Kebab_Simulator.Models.KebabModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.Intrinsics.X86;
 using Kebab_Simulator.Models.ViewModels;
+using System;
 
 namespace Kebab_Simulator.Controllers
 {
-    public class KebabController : Controller
+    public class KebabController : BaseKebabController
     {
-
         private readonly KebabSimulatorContext _context;
         private readonly IKebabSimulatorServices _KebabSimulatorServices;
         private readonly IFileServices _fileServices;
-        public KebabController(KebabSimulatorContext context, IKebabSimulatorServices kebabSimulatorServices, IFileServices fileServices)
+
+        public KebabController(
+            KebabSimulatorContext context,
+            IKebabSimulatorServices kebabSimulatorServices,
+            IFileServices fileServices)
         {
             _context = context;
             _KebabSimulatorServices = kebabSimulatorServices;
@@ -37,16 +40,16 @@ namespace Kebab_Simulator.Controllers
                     Checkout = x.Checkout,
                     KebabBankAccount = x.KebabBankAccount,
                 });
+
             return View(resultingInventory);
         }
+
         [HttpGet]
         public IActionResult Create()
         {
             KebabCreateViewModel vm = new();
             return View("Create", vm);
         }
-
-
 
         [HttpPost]
         public async Task<IActionResult> Create(KebabCreateViewModel vm)
@@ -65,16 +68,15 @@ namespace Kebab_Simulator.Controllers
                 UpdatedAt = DateTime.Now,
                 Files = vm.Files,
                 Image = vm.Image
-                .Select(x => new FileToDatabaseDto
-                {
-                    ID = x.ImageID,
-                    ImageData = x.ImageData,
-                    ImageTitle = x.ImageTitle,
-                    KebabID = x.KebabID,
-                }).ToArray()
-
-
+                    .Select(x => new FileToDatabaseDto
+                    {
+                        ID = x.ImageID,
+                        ImageData = x.ImageData,
+                        ImageTitle = x.ImageTitle,
+                        KebabID = x.KebabID,
+                    }).ToArray()
             };
+
             var result = await _KebabSimulatorServices.Create(dto);
 
             if (result != null)
@@ -84,6 +86,7 @@ namespace Kebab_Simulator.Controllers
 
             return RedirectToAction("Index");
         }
+
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
@@ -122,6 +125,7 @@ namespace Kebab_Simulator.Controllers
 
             return View(vm);
         }
+
         [HttpGet]
         public async Task<IActionResult> Update(Guid id)
         {
@@ -167,6 +171,7 @@ namespace Kebab_Simulator.Controllers
 
             return View("Update", vm);
         }
+
         [HttpPost]
         public async Task<IActionResult> Update(KebabCreateViewModel vm)
         {
@@ -177,7 +182,7 @@ namespace Kebab_Simulator.Controllers
 
             var dto = new KebabDto
             {
-                ID = (Guid) vm.ID,
+                ID = (Guid)vm.ID,
                 KebabName = vm.KebabName,
                 KebabXP = vm.KebabXP,
                 KebabXPNextLevel = vm.KebabXPNextLevel,
@@ -207,6 +212,7 @@ namespace Kebab_Simulator.Controllers
 
             return View(vm);
         }
+
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -245,6 +251,7 @@ namespace Kebab_Simulator.Controllers
 
             return View(vm);
         }
+
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmation(Guid id)
         {
@@ -252,7 +259,7 @@ namespace Kebab_Simulator.Controllers
 
             if (kebabToDelete == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
 
             return RedirectToAction("Index");
@@ -264,13 +271,17 @@ namespace Kebab_Simulator.Controllers
             var dto = new FileToDatabaseDto()
             {
                 ID = vm.ImageID,
-
             };
-            var iamge = await _fileServices.RemoveImageFromDatabase(dto);
-            if (iamge != null) { return RedirectToAction("Index"); }
+
+            var image = await _fileServices.RemoveImageFromDatabase(dto);
+            if (image != null)
+            {
+                return RedirectToAction("Index");
+            }
+
             return RedirectToAction("Index");
         }
-        // ✅ STORE — cooking start
+
         [HttpGet]
         public async Task<IActionResult> Store(Guid recipeId)
         {
@@ -304,12 +315,9 @@ namespace Kebab_Simulator.Controllers
             ViewBag.CookTime = finalCookTime;
             ViewBag.GrillLevel = player.GrillLevel;
 
-            return View("store", vm); // ✅ Ensure view name is correct
+            return View("store", vm);
         }
 
-
-
-        // ✅ SELL — selling cooked kebab
         [HttpPost]
         public async Task<IActionResult> Sell(Guid recipeId)
         {
@@ -364,10 +372,6 @@ namespace Kebab_Simulator.Controllers
             return Json(new { xpGained = xp, newXP = player.KebabXP });
         }
 
-
-
-
-        // ✅ BUY UPGRADE — player leveling system
         [HttpPost]
         public async Task<IActionResult> BuyUpgrade(string upgradeName)
         {
@@ -447,9 +451,6 @@ namespace Kebab_Simulator.Controllers
             return RedirectToAction("Upgrades", "Marketplace");
         }
 
-
-
-        // ✅ PASSIVE INCOME — smart interval calculation
         [HttpPost]
         public async Task<IActionResult> CollectPassiveIncome()
         {
@@ -486,7 +487,25 @@ namespace Kebab_Simulator.Controllers
             await _context.SaveChangesAsync();
 
             return Json(new { earned, interval });
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> ApplyHealthPenalty()
+        {
+            var player = await _context.Kebabs.FirstOrDefaultAsync();
+            if (player == null)
+                return Json(new { success = false, message = "No player found" });
+
+            int penalty = 100;
+
+            if (player.KebabBankAccount >= penalty)
+                player.KebabBankAccount -= penalty;
+            else
+                player.KebabBankAccount = 0;
+
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, newBank = player.KebabBankAccount });
         }
     }
-    }
+}
