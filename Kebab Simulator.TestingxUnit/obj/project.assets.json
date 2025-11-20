@@ -10337,23 +10337,25 @@
     },
     "Kebab Simulator.ApplicationServices/1.0.0": {
       "type": "project",
-      "path": "../Kebab Simulator.ApplicationServices/Kebab Simulator.ApplicationServices.csproj",
-      "msbuildProject": "../Kebab Simulator.ApplicationServices/Kebab Simulator.ApplicationServices.csproj"
+      "path": "../../KebabSimulator/Kebab Simulator.ApplicationServices/Kebab Simulator.ApplicationServices.csproj",
+      "msbuildProject": "../../KebabSimulator/Kebab Simulator.ApplicationServices/Kebab Simulator.ApplicationServices.csproj"
     },
     "Kebab Simulator.Core/1.0.0": {
       "type": "project",
-      "path": "../Kebab Simulator.Core/Kebab Simulator.Core.csproj",
-      "msbuildProject": "../Kebab Simulator.Core/Kebab Simulator.Core.csproj"
+      "path": "../../KebabSimulator/Kebab Simulator.Core/Kebab Simulator.Core.csproj",
+      "msbuildProject": "../../KebabSimulator/Kebab Simulator.Core/Kebab Simulator.Core.csproj"
     },
     "Kebab Simulator.Data/1.0.0": {
       "type": "project",
-      "path": "../Kebab Simulator.Data/Kebab Simulator.Data.csproj",
-      "msbuildProject": "../Kebab Simulator.Data/Kebab Simulator.Data.csproj"
+      "path": "../../KebabSimulator/Kebab Simulator.Data/Kebab Simulator.Data.csproj",
+      "msbuildProject": "../../KebabSimulator/Kebab Simulator.Data/Kebab Simulator.Data.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "C:\\Users\\opilane\\source\\repos\\KebabSimulator1\\Kebab Simulator.ApplicationServices\\Kebab Simulator.ApplicationServices.csproj",
       "Kebab Simulator.ApplicationServices >= 1.0.0",
+      "Kebab Simulator.Core >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 8.0.22",
       "Microsoft.EntityFrameworkCore.InMemory >= 8.0.22",
       "Microsoft.Extensions.Hosting >= 8.0.1",
@@ -10370,11 +10372,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\opilane\\source\\repos\\KebabSimulator\\Kebab Simulator.TestingxUnit\\Kebab Simulator.TestingxUnit.csproj",
+      "projectUniqueName": "C:\\Users\\opilane\\source\\repos\\KebabSimulator1\\Kebab Simulator.TestingxUnit\\Kebab Simulator.TestingxUnit.csproj",
       "projectName": "Kebab Simulator.TestingxUnit",
-      "projectPath": "C:\\Users\\opilane\\source\\repos\\KebabSimulator\\Kebab Simulator.TestingxUnit\\Kebab Simulator.TestingxUnit.csproj",
+      "projectPath": "C:\\Users\\opilane\\source\\repos\\KebabSimulator1\\Kebab Simulator.TestingxUnit\\Kebab Simulator.TestingxUnit.csproj",
       "packagesPath": "C:\\Users\\opilane\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\opilane\\source\\repos\\KebabSimulator\\Kebab Simulator.TestingxUnit\\obj\\",
+      "outputPath": "C:\\Users\\opilane\\source\\repos\\KebabSimulator1\\Kebab Simulator.TestingxUnit\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -10396,8 +10398,14 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
+            "C:\\Users\\opilane\\source\\repos\\KebabSimulator1\\Kebab Simulator.ApplicationServices\\Kebab Simulator.ApplicationServices.csproj": {
+              "projectPath": "C:\\Users\\opilane\\source\\repos\\KebabSimulator1\\Kebab Simulator.ApplicationServices\\Kebab Simulator.ApplicationServices.csproj"
+            },
             "C:\\Users\\opilane\\source\\repos\\KebabSimulator\\Kebab Simulator.ApplicationServices\\Kebab Simulator.ApplicationServices.csproj": {
               "projectPath": "C:\\Users\\opilane\\source\\repos\\KebabSimulator\\Kebab Simulator.ApplicationServices\\Kebab Simulator.ApplicationServices.csproj"
+            },
+            "C:\\Users\\opilane\\source\\repos\\KebabSimulator\\Kebab Simulator.Core\\Kebab Simulator.Core.csproj": {
+              "projectPath": "C:\\Users\\opilane\\source\\repos\\KebabSimulator\\Kebab Simulator.Core\\Kebab Simulator.Core.csproj"
             }
           }
         }
@@ -10466,5 +10474,16 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1105",
+      "level": "Error",
+      "message": "Unable to find project information for 'C:\\Users\\opilane\\source\\repos\\KebabSimulator1\\Kebab Simulator.ApplicationServices\\Kebab Simulator.ApplicationServices.csproj'. If you are using Visual Studio, this may be because the project is unloaded or not part of the current solution so run a restore from the command-line. Otherwise, the project file may be invalid or missing targets required for restore.",
+      "libraryId": "C:\\Users\\opilane\\source\\repos\\KebabSimulator1\\Kebab Simulator.ApplicationServices\\Kebab Simulator.ApplicationServices.csproj",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }
