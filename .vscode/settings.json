@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/d632cc42-5fe3-4c67-9976-525231399bef/resourceGroups/KebabSimulator/providers/Microsoft.Web/sites/KebabSimulator",
+    "appService.deploySubpath": "."
+}
