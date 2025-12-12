@@ -106,12 +106,10 @@ namespace Kebab_Simulator.Controllers
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
 
-                if (user != null && await _userManager.IsEmailConfirmedAsync(user))
+                if (user != null)
                 {
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-
                     var passwordResetLink = Url.Action("ResetPassword", "Accounts", new { email = model.Email, token = token }, Request.Scheme);
-
                     return View("ForgotPasswordConfirmation");
                 }
                 return View("ForgotPasswordConfirmation");
@@ -194,6 +192,7 @@ namespace Kebab_Simulator.Controllers
                     UserName = model.Email,
                     Email = model.Email,
                     City = model.City,
+                    EmailConfirmed = true
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -201,31 +200,8 @@ namespace Kebab_Simulator.Controllers
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, "Player");
-
-                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                    var confirmationLink = Url.Action(
-                        "ConfirmEmail",
-                        "Accounts",
-                        new { userId = user.Id, token = token },
-                        Request.Scheme
-                    );
-
-                    EmailTokenDto newsignup = new()
-                    {
-                        Token = token,
-                        Body = $"Thank you for signing up! Please confirm your email by clicking here: {confirmationLink}",
-                        Subject = "Confirm your email",
-                        To = user.Email
-                    };
-                    _emailServices.SendEmailToken(newsignup, token);
-
-                    if (_SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                    {
-                        return RedirectToAction("ListUsers", "Administrations");
-                    }
-
-                    return View("VerifyEmail");
+                    await _SignInManager.SignInAsync(user, false);
+                    return RedirectToAction("Index", "Home");
                 }
 
                 foreach (var error in result.Errors)
@@ -235,32 +211,6 @@ namespace Kebab_Simulator.Controllers
             }
 
             return View(model);
-        }
-
-
-        [HttpGet]
-        [AllowAnonymous]
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> ConfirmEmail(string userId, string token)
-        {
-            if (userId == null || token == null) { return RedirectToAction("Index", "Home"); }
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                ViewBag.ErrorMessage = $"The user with id of {userId} is not valid";
-                return View("NotFound");
-            }
-            var result = await _userManager.ConfirmEmailAsync(user, token);
-            if (result.Succeeded)
-            {
-                ViewBag.ErrorTitle = "Email confirmed";
-                ViewBag.ErrorMessage = "Your email has been confirmed successfully.";
-                return View();
-            }
-
-            ViewBag.ErrorTitle = "Email cannot be confirmed";
-            ViewBag.ErrorMessage = $"The users email, with userid of {userId}, cannot be confirmed.";
-            return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         [HttpGet]
@@ -281,12 +231,6 @@ namespace Kebab_Simulator.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
-
-                if (user != null && !user.EmailConfirmed && (await _userManager.CheckPasswordAsync(user, model.Password)))
-                {
-                    ModelState.AddModelError(string.Empty, "Your email hasn't been confirmed yet. Please check your Email spam folders.");
-                    return View(model);
-                }
 
                 var result = await _SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
                 if (result.Succeeded)
